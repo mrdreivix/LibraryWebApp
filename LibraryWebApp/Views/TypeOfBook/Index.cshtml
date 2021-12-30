@@ -1,0 +1,44 @@
+﻿@model IEnumerable<LibraryWebApp.Models.TypeOfBook>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Types of Books List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="TypeOfBook" asp-action="Create" class="btn btn-primary">Create new Type</a>
+        </div>
+    </div>
+
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:20%" align="center">
+            <thead>
+                <tr>
+                    <th>
+                        Id.
+                    </th>
+                    <th>
+                        Type Of Boook
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                <tr>
+                    <td width="5%">@obj.Id</td>
+                    <td width="15%">@obj.Name</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No type exists.</p>
+    }
+</div>
