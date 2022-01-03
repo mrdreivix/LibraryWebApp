@@ -41,5 +41,21 @@ namespace LibraryWebApp.Controllers
             }
             return View(obj);
         }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Author.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Author.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
