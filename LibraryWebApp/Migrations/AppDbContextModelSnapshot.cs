@@ -38,28 +38,6 @@ namespace LibraryWebApp.Migrations
                     b.ToTable("Author");
                 });
 
-            modelBuilder.Entity("LibraryWebApp.Models.Fee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("AmountToPay")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fee");
-                });
-
             modelBuilder.Entity("LibraryWebApp.Models.TypeOfBook", b =>
                 {
                     b.Property<int>("Id")
