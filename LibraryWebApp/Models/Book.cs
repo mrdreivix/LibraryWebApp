@@ -13,6 +13,9 @@ namespace LibraryWebApp.Models
         public string Description { get; set; }
         public string Title { get; set; }
         public int Amount { get; set; }
+        public string Author { get; set; }
+        public string TypeOfBook { get; set; }
         public DateTime ReleaseDate { get; set; }
+        public List<BookAuthor> BookAuthor { get; set; }
     }
 }
