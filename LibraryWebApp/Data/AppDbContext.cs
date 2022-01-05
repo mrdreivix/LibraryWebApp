@@ -14,23 +14,8 @@ namespace LibraryWebApp.Data
 
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<BookAuthor>()
-                .HasOne(b => b.Book)
-                .WithMany(ba => ba.BookAuthor)
-                .HasForeignKey(bi => bi.BookId);
-
-            modelBuilder.Entity<BookAuthor>()
-               .HasOne(b => b.Author)
-               .WithMany(ba => ba.BookAuthor)
-               .HasForeignKey(bi => bi.AuthorId);
-        }
-
         public DbSet<TypeOfBook> TypeOfBook { get; set; }
         public DbSet<Author> Author { get; set; }
         public DbSet<Fee> Fee { get; set; }
-        public DbSet<Book> Book { get; set; }
-        public DbSet<BookAuthor> BookAuthor { get; set; }
     }
 }
