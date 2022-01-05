@@ -14,5 +14,6 @@ namespace LibraryWebApp.Models
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
+        public virtual List<BookAuthor> BookAuthor { get; set; }
     }
 }
