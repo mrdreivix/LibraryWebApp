@@ -10,7 +10,9 @@ namespace LibraryWebApp.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public string Title { get; set; }
         public int Amount { get; set; }
         public DateTime ReleaseDate { get; set; }

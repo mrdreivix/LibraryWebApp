@@ -1,0 +1,96 @@
+﻿@model LibraryWebApp.Models.BookAuthorVM
+
+<form method="post" asp-action="Create">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Add Book</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Book.Title"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Book.Title" class="form-control" />
+                        <span asp-validation-for="Book.Title" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Book.Amount"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Book.Amount" class="form-control" />
+                        <span asp-validation-for="Book.Amount" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Book.ReleaseDate"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Book.ReleaseDate" type="date"
+                               min="1700-01-01" max="2022-12-31" class="form-control" />
+                        <span asp-validation-for="Book.ReleaseDate" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Book.Description"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Book.Description" class="form-control" />
+                        <span asp-validation-for="Book.Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label></label>
+                    </div>
+                    <div class="col-8">
+
+
+                        <br />
+                        <select name="AuthorsId" asp-for="AuthorsId" style="width:70%" multiple=multiple>
+                            @foreach (var author in Model.Authors)
+                            {
+                                <option value="@author.Id">@author.Name  @author.Surname </option>
+                            }
+
+                        </select>
+                        <span asp-validation-for="AuthorsId" class="text-danger"></span>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-primary w-100">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+<div class="col-4">
+    @* Keep this empty *@
+</div>
+        </div>
+    
+</form>
+
+
+

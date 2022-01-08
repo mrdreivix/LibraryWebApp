@@ -25,6 +25,7 @@ namespace LibraryWebApp.Controllers
         //GET - CREATE
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -33,6 +34,8 @@ namespace LibraryWebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Author obj)
         {
+           
+
             if (ModelState.IsValid)
             {
                 _db.Author.Add(obj);
@@ -82,6 +85,10 @@ namespace LibraryWebApp.Controllers
                 return NotFound();
             }
             _db.Author.Remove(obj);
+            foreach (var k in _db.BookAuthor.Where(x => x.IdAuthor == id))
+            {
+                _db.BookAuthor.Remove(k);
+            }
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
