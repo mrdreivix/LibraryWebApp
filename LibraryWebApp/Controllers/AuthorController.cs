@@ -40,7 +40,7 @@ namespace LibraryWebApp.Controllers
             {
                 _db.Author.Add(obj);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
@@ -69,7 +69,7 @@ namespace LibraryWebApp.Controllers
             {
                 _db.Author.Update(obj);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
@@ -90,7 +90,7 @@ namespace LibraryWebApp.Controllers
                 _db.BookAuthor.Remove(k);
             }
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }
