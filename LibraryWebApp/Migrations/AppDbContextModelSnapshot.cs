@@ -38,6 +38,22 @@ namespace LibraryWebApp.Migrations
                     b.ToTable("Author");
                 });
 
+            modelBuilder.Entity("LibraryWebApp.Models.TypeOfBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeOfBook");
+                });
+#pragma warning restore 612, 618
         }
     }
 }
