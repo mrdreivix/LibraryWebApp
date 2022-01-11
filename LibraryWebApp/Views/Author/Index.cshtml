@@ -19,13 +19,13 @@
             <thead>
                 <tr>
                     <th>
-                        Author Id.
+                        <label asp-for="@Model.ToList()[0].Id"></label>
                     </th>
                     <th>
-                        Name
+                        <label asp-for="@Model.ToList()[0].Name"></label> 
                     </th>
                     <th>
-                        Surname
+                        <label asp-for="@Model.ToList()[0].Surname"></label>
                     </th>
                 </tr>
             </thead>
