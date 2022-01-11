@@ -15,14 +15,15 @@
 
     @if (Model.Count() > 0)
     {
+        
         <table class="table table-bordered table-striped" style="width:40%" align="center">
             <thead>
                 <tr>
                     <th>
-                        Id.
-                    </th>
+                        <label asp-for="@Model.ToList()[0].Id"></label>
+</th>
                     <th>
-                        Type Of Book
+                        <label asp-for="@Model.ToList()[0].Name"></label>
                     </th>
                 </tr>
             </thead>
