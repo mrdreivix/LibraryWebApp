@@ -18,7 +18,7 @@ namespace LibraryWebApp.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<TypeOfBook> objList = _db.TypeOfBook;
+            IEnumerable<Models.TypeOfBook> objList = _db.TypeOfBook;
             return View(objList);
         }
 
@@ -32,7 +32,7 @@ namespace LibraryWebApp.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(TypeOfBook obj)
+        public IActionResult Create(Models.TypeOfBook obj)
         {
             if (ModelState.IsValid)
             {
@@ -61,7 +61,7 @@ namespace LibraryWebApp.Controllers
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(TypeOfBook obj)
+        public IActionResult Edit(Models.TypeOfBook obj)
         {
             if (ModelState.IsValid)
             {

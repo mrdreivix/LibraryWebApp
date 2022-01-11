@@ -14,7 +14,7 @@
 
     @if (Model.Count() > 0)
     {
-        <table class="table table-bordered table-striped" style="width:75%" align="center">
+        <table class="table table-bordered table-striped" style="width:100%" align="center">
             <thead>
                 <tr>
                     <th>
@@ -33,6 +33,9 @@
                         Authors
                     </th>
                     <th>
+                        Book Types
+                    </th>
+                    <th>
                         Release Date
                     </th>
                 </tr>
@@ -45,13 +48,19 @@
                     <td width="3%">@obj.Title</td>
                     <td width="30%">@obj.Description</td>
                     <td width="3%">@obj.Amount</td>
-                    <td width="30%">
+                    <td width="22%">
                         @foreach (var bookAuthor in obj.BookAuthor)
                         {
-                        <pan>@bookAuthor.Author.Name&nbsp;@bookAuthor.Author.Surname,&nbsp;&nbsp;&nbsp;</pan>
+                            <pan>@bookAuthor.Author.Name&nbsp;@bookAuthor.Author.Surname,&nbsp;&nbsp;&nbsp;</pan>
                         }
                     </td>
-                    <td width="30%">@obj.ReleaseDate.ToString("dd-MM-yyyy") </td>
+                    <td width="22%">
+                        @foreach (var type in obj.BookType)
+                        {
+                            <pan>@type.TypeOfBook.Name,&nbsp;</pan>
+                        }
+                    </td>
+                    <td width="15%">@obj.ReleaseDate.ToString("dd-MM-yyyy") </td>
 
                     <td class="text-center">
                         <div class="w-75 btn-group" role="group">

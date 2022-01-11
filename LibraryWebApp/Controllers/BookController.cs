@@ -19,16 +19,17 @@ namespace LibraryWebApp.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Book> books = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author);
+            IEnumerable<Book> books = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook);
             return View(books);
         }
 
         //GET - CREATE
         public IActionResult Create()
         {
-            BookAuthorVM model = new BookAuthorVM
+            BookVM model = new BookVM
             {
-                Authors = _db.Author
+                Authors = _db.Author,
+                Types = _db.TypeOfBook
             };
             return View(model);
         }
@@ -36,7 +37,7 @@ namespace LibraryWebApp.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BookAuthorVM obj)
+        public IActionResult Create(BookVM obj)
         {
             if (ModelState.IsValid)
             {
@@ -54,13 +55,26 @@ namespace LibraryWebApp.Controllers
                         _db.BookAuthor.Add(bookAuthor);
                     }
                 }
+                if (obj.TypesOfBookId != null)
+                {
+                    foreach (var p in obj.TypesOfBookId)
+                    {
+                        BookType bookType = new BookType
+                        {
+                            IdBook = obj.Book.Id,
+                            IdTypeOfBook = p
+                        };
+                        _db.BookType.Add(bookType);
+                    }
+                }
                 _db.SaveChanges();
                
                 return RedirectToAction("Index");
             }
-            BookAuthorVM model = new BookAuthorVM
+            BookVM model = new BookVM
             {
-                Authors = _db.Author
+                Authors = _db.Author,
+                Types = _db.TypeOfBook
             };
             return View(model);
         }
@@ -83,6 +97,11 @@ namespace LibraryWebApp.Controllers
                 
                 _db.BookAuthor.Remove(bookAuthor);
             }
+            foreach (var bookType in _db.BookType.Where(x => x.IdBook == id))
+            {
+
+                _db.BookType.Remove(bookType);
+            }
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -90,11 +109,14 @@ namespace LibraryWebApp.Controllers
         //GET - EDIT
         public IActionResult Edit(int? id)
         {
-            BookAuthorVM model = new BookAuthorVM
+            BookVM model = new BookVM
             {
                 Authors = _db.Author,
                 BookAuthors = _db.BookAuthor.Where(x => x.IdBook == id),
-                Book = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Where(x => x.Id == id).FirstOrDefault()
+                Types = _db.TypeOfBook,
+                BookTypes = _db.BookType.Where(x=>x.IdBook == id),
+                Book = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Where(x => x.Id == id).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook).Where(x => x.Id == id).FirstOrDefault()
+            
             };
             return View(model);
         }
@@ -102,7 +124,7 @@ namespace LibraryWebApp.Controllers
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(BookAuthorVM obj)
+        public IActionResult Edit(BookVM obj)
         {
             if (ModelState.IsValid)
             {
@@ -112,6 +134,10 @@ namespace LibraryWebApp.Controllers
                     foreach (var bookAuthor in _db.BookAuthor.Where(x => x.IdBook == obj.Book.Id))
                     {
                         _db.BookAuthor.Remove(bookAuthor);
+                    }
+                    foreach (var bookType in _db.BookType.Where(x => x.IdBook == obj.Book.Id))
+                    {
+                        _db.BookType.Remove(bookType);
                     }
                 if (obj.AuthorsId != null)
                 {
@@ -125,14 +151,28 @@ namespace LibraryWebApp.Controllers
                         _db.BookAuthor.Add(bookAuthor);
                     }
                 }
+                if (obj.TypesOfBookId != null)
+                {
+                    foreach (var typeId in obj.TypesOfBookId)
+                    {
+                        BookType bookType = new BookType
+                        {
+                            IdBook = obj.Book.Id,
+                            IdTypeOfBook = typeId
+                        };
+                        _db.BookType.Add(bookType);
+                    }
+                }
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            BookAuthorVM model = new BookAuthorVM
+            BookVM model = new BookVM
             {
                 Authors = _db.Author,
                 BookAuthors = _db.BookAuthor.Where(x => x.IdBook == obj.Book.Id),
-                Book = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Where(x => x.Id == obj.Book.Id).FirstOrDefault()
+                Types = _db.TypeOfBook,
+                BookTypes = _db.BookType.Where(x => x.IdBook == obj.Book.Id),
+                Book = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Where(x => x.Id == obj.Book.Id).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook).Where(x => x.Id == obj.Book.Id).FirstOrDefault()
             };
             return View(model);
         }
