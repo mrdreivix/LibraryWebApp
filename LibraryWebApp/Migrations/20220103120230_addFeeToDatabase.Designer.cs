@@ -3,14 +3,16 @@ using LibraryWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220103120230_addFeeToDatabase")]
+    partial class addFeeToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +39,7 @@ namespace LibraryWebApp.Migrations
 
                     b.ToTable("Author");
                 });
+
             modelBuilder.Entity("LibraryWebApp.Models.Fee", b =>
                 {
                     b.Property<int>("Id")
@@ -58,6 +61,7 @@ namespace LibraryWebApp.Migrations
 
                     b.ToTable("Fee");
                 });
+
             modelBuilder.Entity("LibraryWebApp.Models.TypeOfBook", b =>
                 {
                     b.Property<int>("Id")
