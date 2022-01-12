@@ -22,7 +22,6 @@ namespace LibraryWebApp.Controllers
             IEnumerable<Book> books = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook);
             return View(books);
         }
-
         //GET - CREATE
         public IActionResult Create()
         {
@@ -33,7 +32,6 @@ namespace LibraryWebApp.Controllers
             };
             return View(model);
         }
-
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -68,8 +66,7 @@ namespace LibraryWebApp.Controllers
                     }
                 }
                 _db.SaveChanges();
-               
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             BookVM model = new BookVM
             {
@@ -78,7 +75,6 @@ namespace LibraryWebApp.Controllers
             };
             return View(model);
         }
-
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -91,7 +87,6 @@ namespace LibraryWebApp.Controllers
                 return NotFound();
             }
             _db.Book.Remove(obj);
-
             foreach (var bookAuthor in _db.BookAuthor.Where(x => x.IdBook == id))
             {
                 
@@ -103,9 +98,8 @@ namespace LibraryWebApp.Controllers
                 _db.BookType.Remove(bookType);
             }
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
-
         //GET - EDIT
         public IActionResult Edit(int? id)
         {
@@ -120,7 +114,6 @@ namespace LibraryWebApp.Controllers
             };
             return View(model);
         }
-
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -164,7 +157,7 @@ namespace LibraryWebApp.Controllers
                     }
                 }
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             BookVM model = new BookVM
             {

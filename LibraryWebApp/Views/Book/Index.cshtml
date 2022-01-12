@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<LibraryWebApp.Models.Book>
+@{
+    var bookModelTemplate = new Book();
+}
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
@@ -18,30 +21,30 @@
             <thead>
                 <tr>
                     <th>
-                        Id.
+                        <label asp-for="@bookModelTemplate.Id" />
                     </th>
                     <th>
-                        Title
+                        <label asp-for="@bookModelTemplate.Title" />
                     </th>
                     <th>
-                        Description
+                        <label asp-for="@bookModelTemplate.Description" />
                     </th>
                     <th>
-                        Amount
+                        <label asp-for="@bookModelTemplate.Amount" />
                     </th>
                     <th>
-                        Authors
+                        <label asp-for="@bookModelTemplate.BookAuthor" />
                     </th>
                     <th>
                         Book Types
                     </th>
                     <th>
-                        Release Date
+                        <label asp-for="@bookModelTemplate.ReleaseDate" />
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model)
+                @foreach (var book in Model)
                 {
                 <tr>
                     <td width="3%">@obj.Id</td>
@@ -61,18 +64,17 @@
                         }
                     </td>
                     <td width="15%">@obj.ReleaseDate.ToString("dd-MM-yyyy") </td>
-
-                    <td class="text-center">
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Book" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary mx-2">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a class="btn btn-danger mx-2" asp-route-Id="@obj.Id" asp-action="Delete">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                        <td class="text-center">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Book" asp-route-Id="@book.Id" asp-action="Edit" class="btn btn-primary mx-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-danger mx-2" asp-route-Id="@book.Id" asp-action="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
