@@ -21,21 +21,17 @@ namespace LibraryWebApp.Controllers
             IEnumerable<Author> objList = _db.Author;
             return View(objList);
         }
-
         //GET - CREATE
         public IActionResult Create()
         {
 
             return View();
         }
-
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Author obj)
         {
-           
-
             if (ModelState.IsValid)
             {
                 _db.Author.Add(obj);
@@ -59,7 +55,6 @@ namespace LibraryWebApp.Controllers
             }
             return View(obj);
         }
-
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
