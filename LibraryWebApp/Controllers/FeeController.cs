@@ -38,7 +38,7 @@ namespace LibraryWebApp.Controllers
             {
                 _db.Fee.Add(obj);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
@@ -67,7 +67,7 @@ namespace LibraryWebApp.Controllers
             {
                 _db.Fee.Update(obj);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
@@ -84,7 +84,7 @@ namespace LibraryWebApp.Controllers
             }
             _db.Fee.Remove(obj);
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
     
