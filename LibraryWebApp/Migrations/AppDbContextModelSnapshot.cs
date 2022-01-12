@@ -37,7 +37,6 @@ namespace LibraryWebApp.Migrations
 
                     b.ToTable("Author");
                 });
-
             modelBuilder.Entity("LibraryWebApp.Models.Fee", b =>
                 {
                     b.Property<int>("Id")
@@ -59,7 +58,6 @@ namespace LibraryWebApp.Migrations
 
                     b.ToTable("Fee");
                 });
-
             modelBuilder.Entity("LibraryWebApp.Models.TypeOfBook", b =>
                 {
                     b.Property<int>("Id")
