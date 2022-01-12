@@ -21,13 +21,12 @@ namespace LibraryWebApp.Controllers
             IEnumerable<Author> objList = _db.Author;
             return View(objList);
         }
-
         //GET - CREATE
         public IActionResult Create()
         {
+
             return View();
         }
-
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -56,7 +55,6 @@ namespace LibraryWebApp.Controllers
             }
             return View(obj);
         }
-
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -82,6 +80,10 @@ namespace LibraryWebApp.Controllers
                 return NotFound();
             }
             _db.Author.Remove(obj);
+            foreach (var k in _db.BookAuthor.Where(x => x.IdAuthor == id))
+            {
+                _db.BookAuthor.Remove(k);
+            }
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
