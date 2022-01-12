@@ -6,14 +6,9 @@
             <h2 class="text-primary">Fee List</h2>
         </div>
     </div>
-
     @{
         var modelTemplate = new Fee();
     }
-
-
-
-    <label asp-for="@modelTemplate.Name" />
 
     <br /><br />
 
@@ -23,16 +18,16 @@
             <thead>
                 <tr>
                     <th>
-                        <label asp-for="@modelTemplate.Id"/>
+                        <label asp-for="@modelTemplate.Id"></label>
                     </th>
                     <th>
-                        <label asp-for="@modelTemplate.Name" />
+                        <label asp-for="@modelTemplate.Name"></label>
                     </th>
                     <th>
-                        <label asp-for="@modelTemplate.AmountToPay" />
+                        <label asp-for="@modelTemplate.AmountToPay"></label>
                     </th>
                     <th>
-                        <label asp-for="@modelTemplate.Description" />
+                        <label asp-for="@modelTemplate.Description"></label>
                     </th>
                 </tr>
             </thead>
