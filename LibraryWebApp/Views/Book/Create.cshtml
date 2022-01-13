@@ -1,6 +1,6 @@
 ﻿@model LibraryWebApp.Models.BookVM
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="border p-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
@@ -94,7 +94,7 @@
                         Image
                     </div>
                     <div class="col-8">
-                        <input type="file" name="files" id="uploadBox" multiple class="form-control"/>
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
                     </div>
                 </div>
 

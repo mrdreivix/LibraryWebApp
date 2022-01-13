@@ -39,7 +39,10 @@
                         <label asp-for="@bookModelTemplate.BookType"></label>
                     </th>
                     <th>
-                        <label asp-for="@bookModelTemplate.ReleaseDate" />
+                        <label asp-for="@bookModelTemplate.ReleaseDate"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@bookModelTemplate.Image"></label>
                     </th>
                 </tr>
             </thead>
@@ -49,7 +52,7 @@
                 <tr>
                     <td width="3%">@book.Id</td>
                     <td width="3%">@book.Title</td>
-                    <td width="30%">@book.Description</td>
+                    <td width="20%">@book.Description</td>
                     <td width="3%">@book.Amount</td>
                     <td width="22%">
                         @foreach (var bookAuthor in book.BookAuthor)
@@ -63,7 +66,13 @@
                             <pan>@type.TypeOfBook.Name,&nbsp;</pan>
                         }
                     </td>
-                    <td width="15%">@book.ReleaseDate.ToString("dd-MM-yyyy") </td>
+                    <td width="20">@book.ReleaseDate.ToString("dd-MM-yyyy") </td>
+                    <td width="10%">
+                        @if (book.Image != null)
+                        {   
+                            <img src="@WC.ImagePath@book.Image" width="100%" style="border-radius:5px;border:1px solid #bbb;max-height:100px;" />
+                        }
+                    </td>
                         <td class="text-center">
                             <div class="w-75 btn-group" role="group">
                                 <a asp-controller="Book" asp-route-Id="@book.Id" asp-action="Edit" class="btn btn-primary mx-2">
