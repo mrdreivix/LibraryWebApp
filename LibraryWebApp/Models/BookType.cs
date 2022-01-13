@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Models
 {
-    public class TypeOfBook
+    public class BookType
     {
         [Key]
         public int Id { get; set; }

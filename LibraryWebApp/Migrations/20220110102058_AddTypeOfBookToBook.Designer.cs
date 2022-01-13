@@ -4,14 +4,16 @@ using LibraryWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220110102058_AddTypeOfBookToBook")]
+    partial class AddTypeOfBookToBook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +55,6 @@ namespace LibraryWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
@@ -90,7 +89,7 @@ namespace LibraryWebApp.Migrations
                     b.ToTable("BookAuthor");
                 });
 
-            modelBuilder.Entity("LibraryWebApp.Models.BookBookType", b =>
+            modelBuilder.Entity("LibraryWebApp.Models.BookType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,22 +107,6 @@ namespace LibraryWebApp.Migrations
                     b.HasIndex("IdBook");
 
                     b.HasIndex("IdTypeOfBook");
-
-                    b.ToTable("BookBookType");
-                });
-
-            modelBuilder.Entity("LibraryWebApp.Models.BookType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
 
                     b.ToTable("BookType");
                 });
@@ -150,6 +133,27 @@ namespace LibraryWebApp.Migrations
                     b.ToTable("Fee");
                 });
 
+            modelBuilder.Entity("LibraryWebApp.Models.TypeOfBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("TypeOfBook");
+                });
+
             modelBuilder.Entity("LibraryWebApp.Models.BookAuthor", b =>
                 {
                     b.HasOne("LibraryWebApp.Models.Author", "Author")
@@ -165,19 +169,26 @@ namespace LibraryWebApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LibraryWebApp.Models.BookBookType", b =>
+            modelBuilder.Entity("LibraryWebApp.Models.BookType", b =>
                 {
                     b.HasOne("LibraryWebApp.Models.Book", "Book")
-                        .WithMany("BookType")
+                        .WithMany()
                         .HasForeignKey("IdBook")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryWebApp.Models.BookType", "TypeOfBook")
+                    b.HasOne("LibraryWebApp.Models.TypeOfBook", "TypeOfBook")
                         .WithMany()
                         .HasForeignKey("IdTypeOfBook")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LibraryWebApp.Models.TypeOfBook", b =>
+                {
+                    b.HasOne("LibraryWebApp.Models.Book", null)
+                        .WithMany("TypeOfBook")
+                        .HasForeignKey("BookId");
                 });
 #pragma warning restore 612, 618
         }

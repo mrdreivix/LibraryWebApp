@@ -1,6 +1,6 @@
-﻿@model LibraryWebApp.Models.BookAuthorVM
+﻿@model LibraryWebApp.Models.BookVM
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="border p-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
@@ -53,7 +53,7 @@
 
                 <div class="form-group row">
                     <div class="col-4">
-                        <label></label>
+                        <label>Choose the author:</label>
                     </div>
                     <div class="col-8">
 
@@ -70,13 +70,40 @@
 
                     </div>
                 </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label>Choose type of book:</label>
+                    </div>
+                    <div class="col-8">
+
+
+                        <br />
+                        <select name="TypesOfBookId" asp-for="TypesOfBookId" style="width:70%" multiple=multiple>
+                            @foreach (var type in Model.Types)
+                            {
+                                <option value="@type.Id">@type.Name</option>
+                            }
+
+                        </select>
+                        <span asp-validation-for="TypesOfBookId" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        Image
+                    </div>
+                    <div class="col-8">
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                    </div>
+                </div>
 
 
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                            <input type="submit" asp-for="Book.Image" onclick="return validateInput()" class="btn btn-info w-100" value="Create" />
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-primary w-100">Back</a>
@@ -89,5 +116,17 @@
     
 </form>
 
-
-
+<script>
+    function validateInput() {
+        if (document.getElementById("uploadBox").value == "") {
+            Swal.fire(
+                'Error',
+                'Please upload an Image!',
+                'Error'
+            )
+            return false;
+        }
+        return true;
+    }
+</script>
+ 

@@ -16,9 +16,12 @@ namespace LibraryWebApp.Models
         [Required]
         public string Title { get; set; }
         public int Amount { get; set; }
+        public string Image { get; set; }
         [DisplayName("Release Date")]
         public DateTime ReleaseDate { get; set; }
         [DisplayName("Book Authors")]
         public virtual List<BookAuthor> BookAuthor { get; set; }
-}
+        [DisplayName("Book Type")]
+        public virtual List<BookBookType> BookType { get; set; }
+    }
 }
