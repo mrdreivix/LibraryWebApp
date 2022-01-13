@@ -13,10 +13,10 @@ namespace LibraryWebApp.Models
         public IEnumerable<BookAuthor> BookAuthors { get; set; }
         public Book Book { get; set; }
         public List<int> AuthorsId { get; set; }
-        public IEnumerable<BookType> BookTypes { get; set; }
-        public IEnumerable<TypeOfBook> Types { get; set; }
+        public IEnumerable<BookBookType> BookTypes { get; set; }
+        public IEnumerable<BookType> Types { get; set; }
         public List<int> TypesOfBookId { get; set; }
-        public TypeOfBook Type { get; set; }
+        public BookType Type { get; set; }
 
     }
 }

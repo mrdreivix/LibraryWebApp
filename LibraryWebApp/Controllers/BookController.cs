@@ -33,7 +33,7 @@ namespace LibraryWebApp.Controllers
             BookVM model = new BookVM
             {
                 Authors = _db.Author,
-                Types = _db.TypeOfBook
+                Types = _db.BookType
             };
             return View(model);
         }
@@ -59,12 +59,12 @@ namespace LibraryWebApp.Controllers
                 _db.SaveChanges();
                 if (obj.AuthorsId != null)
                 {
-                    foreach (var p in obj.AuthorsId)
+                    foreach (var idAuthor in obj.AuthorsId)
                     {
                         BookAuthor bookAuthor = new BookAuthor
                         {
                             IdBook = obj.Book.Id,
-                            IdAuthor = p
+                            IdAuthor = idAuthor
                         };
                         _db.BookAuthor.Add(bookAuthor);
                     }
@@ -73,12 +73,12 @@ namespace LibraryWebApp.Controllers
                 {
                     foreach (var p in obj.TypesOfBookId)
                     {
-                        BookType bookType = new BookType
+                        BookBookType bookType = new BookBookType
                         {
                             IdBook = obj.Book.Id,
                             IdTypeOfBook = p
                         };
-                        _db.BookType.Add(bookType);
+                        _db.BookBookType.Add(bookType);
                     }
                 }
                 _db.SaveChanges();
@@ -87,7 +87,7 @@ namespace LibraryWebApp.Controllers
             BookVM model = new BookVM
             {
                 Authors = _db.Author,
-                Types = _db.TypeOfBook
+                Types = _db.BookType
             };
             return View(model);
         }
@@ -115,10 +115,10 @@ namespace LibraryWebApp.Controllers
                 
                 _db.BookAuthor.Remove(bookAuthor);
             }
-            foreach (var bookType in _db.BookType.Where(x => x.IdBook == id))
+            foreach (var bookType in _db.BookBookType.Where(x => x.IdBook == id))
             {
 
-                _db.BookType.Remove(bookType);
+                _db.BookBookType.Remove(bookType);
             }
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -130,9 +130,16 @@ namespace LibraryWebApp.Controllers
             {
                 Authors = _db.Author,
                 BookAuthors = _db.BookAuthor.Where(x => x.IdBook == id),
-                Types = _db.TypeOfBook,
-                BookTypes = _db.BookType.Where(x=>x.IdBook == id),
-                Book = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Where(x => x.Id == id).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook).Where(x => x.Id == id).FirstOrDefault()
+                Types = _db.BookType,
+                BookTypes = _db.BookBookType.Where(x=>x.IdBook == id),
+                Book = _db.Book
+                .Include(x => x.BookAuthor)
+                .ThenInclude(x => x.Author)
+                .Where(x => x.Id == id)
+                .Include(x => x.BookType)
+                .ThenInclude(x => x.TypeOfBook)
+                .Where(x => x.Id == id)
+                .FirstOrDefault()
             
             };
             return View(model);
@@ -175,9 +182,9 @@ namespace LibraryWebApp.Controllers
                     {
                         _db.BookAuthor.Remove(bookAuthor);
                     }
-                    foreach (var bookType in _db.BookType.Where(x => x.IdBook == obj.Book.Id))
+                    foreach (var bookType in _db.BookBookType.Where(x => x.IdBook == obj.Book.Id))
                     {
-                        _db.BookType.Remove(bookType);
+                        _db.BookBookType.Remove(bookType);
                     }
                 if (obj.AuthorsId != null)
                 {
@@ -195,12 +202,12 @@ namespace LibraryWebApp.Controllers
                 {
                     foreach (var typeId in obj.TypesOfBookId)
                     {
-                        BookType bookType = new BookType
+                        BookBookType bookType = new BookBookType
                         {
                             IdBook = obj.Book.Id,
                             IdTypeOfBook = typeId
                         };
-                        _db.BookType.Add(bookType);
+                        _db.BookBookType.Add(bookType);
                     }
                 }
                 _db.SaveChanges();
@@ -210,9 +217,16 @@ namespace LibraryWebApp.Controllers
             {
                 Authors = _db.Author,
                 BookAuthors = _db.BookAuthor.Where(x => x.IdBook == obj.Book.Id),
-                Types = _db.TypeOfBook,
-                BookTypes = _db.BookType.Where(x => x.IdBook == obj.Book.Id),
-                Book = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Where(x => x.Id == obj.Book.Id).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook).Where(x => x.Id == obj.Book.Id).FirstOrDefault()
+                Types = _db.BookType,
+                BookTypes = _db.BookBookType.Where(x => x.IdBook == obj.Book.Id),
+                Book = _db.Book
+                .Include(x => x.BookAuthor)
+                .ThenInclude(x => x.Author)
+                .Where(x => x.Id == obj.Book.Id)
+                .Include(x => x.BookType)
+                .ThenInclude(x => x.TypeOfBook)
+                .Where(x => x.Id == obj.Book.Id)
+                .FirstOrDefault()
             };
             return View(model);
         }

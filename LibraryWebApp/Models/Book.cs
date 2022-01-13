@@ -22,6 +22,6 @@ namespace LibraryWebApp.Models
         [DisplayName("Book Authors")]
         public virtual List<BookAuthor> BookAuthor { get; set; }
         [DisplayName("Book Type")]
-        public virtual List<BookType> BookType { get; set; }
+        public virtual List<BookBookType> BookType { get; set; }
     }
 }

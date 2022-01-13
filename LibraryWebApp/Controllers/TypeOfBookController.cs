@@ -18,7 +18,7 @@ namespace LibraryWebApp.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Models.TypeOfBook> objList = _db.TypeOfBook;
+            IEnumerable<BookType> objList = _db.BookType;
             return View(objList);
         }
 
@@ -32,11 +32,11 @@ namespace LibraryWebApp.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Models.TypeOfBook obj)
+        public IActionResult Create(Models.BookType obj)
         {
             if (ModelState.IsValid)
             {
-                _db.TypeOfBook.Add(obj);
+                _db.BookType.Add(obj);
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -50,7 +50,7 @@ namespace LibraryWebApp.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.TypeOfBook.Find(id);
+            var obj = _db.BookType.Find(id);
             if (obj == null)
             {
                 return NotFound();
@@ -61,11 +61,11 @@ namespace LibraryWebApp.Controllers
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Models.TypeOfBook obj)
+        public IActionResult Edit(Models.BookType obj)
         {
             if (ModelState.IsValid)
             {
-                _db.TypeOfBook.Update(obj);
+                _db.BookType.Update(obj);
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -77,12 +77,12 @@ namespace LibraryWebApp.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.TypeOfBook.Find(id);
+            var obj = _db.BookType.Find(id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.TypeOfBook.Remove(obj);
+            _db.BookType.Remove(obj);
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
