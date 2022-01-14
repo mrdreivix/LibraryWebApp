@@ -19,22 +19,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial"/>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="TypeOfBook" asp-action="Index">Type of book</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Author" asp-action="Index">Authors</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Fee" asp-action="Index">Fee</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Book</a>
-                        </li>
+                        @if (User.IsInRole(WC.AdminRole))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Content Management 
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link text-dark" asp-controller="TypeOfBook" asp-action="Index">Type of book</a>
+                                    <a class="nav-link text-dark" asp-controller="Author" asp-action="Index">Authors</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Fee" asp-action="Index">Fee</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Book</a>
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New Admin Account</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

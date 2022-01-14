@@ -1,4 +1,5 @@
 ﻿using LibraryWebApp.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -19,5 +20,6 @@ namespace LibraryWebApp.Data
         public DbSet<BookAuthor> BookAuthor { get; set; }
         public DbSet<BookType> BookType { get; set; }
         public DbSet<Fee> Fee { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }
