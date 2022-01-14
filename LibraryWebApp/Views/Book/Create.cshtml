@@ -1,5 +1,9 @@
 ﻿@model LibraryWebApp.Models.BookVM
 
+@{
+    var todayDate = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
 <form method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="border p-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -35,7 +39,7 @@
                     </div>
                     <div class="col-8">
                         <input asp-for="Book.ReleaseDate" type="date"
-                               min="1700-01-01" max="2022-12-31" class="form-control" />
+                               min="1700-01-01" max="@todayDate" class="form-control" />
                         <span asp-validation-for="Book.ReleaseDate" class="text-danger"></span>
                     </div>
 
