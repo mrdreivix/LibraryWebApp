@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Controllers
 {
-    public class TypeOfBookController : Controller
+    public class BookTypeController : Controller
     {
         private readonly AppDbContext _db;
 
-        public TypeOfBookController(AppDbContext db)
+        public BookTypeController(AppDbContext db)
         {
             _db = db;
         }

@@ -82,14 +82,14 @@
 
 
                         <br />
-                        <select name="TypesOfBookId" asp-for="TypesOfBookId" style="width:70%" multiple=multiple>
+                        <select name="BookTypesId" asp-for="BookTypesId" style="width:70%" multiple=multiple>
                             @foreach (var type in Model.Types)
                             {
                                 <option value="@type.Id">@type.Name</option>
                             }
 
                         </select>
-                        <span asp-validation-for="TypesOfBookId" class="text-danger"></span>
+                        <span asp-validation-for="BookTypesId" class="text-danger"></span>
 
                     </div>
                 </div>

@@ -24,7 +24,7 @@ namespace LibraryWebApp.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Book> books = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Include(x => x.BookType).ThenInclude(x => x.TypeOfBook);
+            IEnumerable<Book> books = _db.Book.Include(x => x.BookAuthor).ThenInclude(x => x.Author).Include(x => x.BookType).ThenInclude(x => x.BookType);
             return View(books);
         }
         //GET - CREATE
@@ -69,14 +69,14 @@ namespace LibraryWebApp.Controllers
                         _db.BookAuthor.Add(bookAuthor);
                     }
                 }
-                if (obj.TypesOfBookId != null)
+                if (obj.BookTypesId != null)
                 {
-                    foreach (var p in obj.TypesOfBookId)
+                    foreach (var p in obj.BookTypesId)
                     {
                         BookBookType bookType = new BookBookType
                         {
                             IdBook = obj.Book.Id,
-                            IdTypeOfBook = p
+                            IdBookType = p
                         };
                         _db.BookBookType.Add(bookType);
                     }
@@ -137,7 +137,7 @@ namespace LibraryWebApp.Controllers
                 .ThenInclude(x => x.Author)
                 .Where(x => x.Id == id)
                 .Include(x => x.BookType)
-                .ThenInclude(x => x.TypeOfBook)
+                .ThenInclude(x => x.BookType)
                 .Where(x => x.Id == id)
                 .FirstOrDefault()
             
@@ -198,14 +198,14 @@ namespace LibraryWebApp.Controllers
                         _db.BookAuthor.Add(bookAuthor);
                     }
                 }
-                if (obj.TypesOfBookId != null)
+                if (obj.BookTypesId != null)
                 {
-                    foreach (var typeId in obj.TypesOfBookId)
+                    foreach (var typeId in obj.BookTypesId)
                     {
                         BookBookType bookType = new BookBookType
                         {
                             IdBook = obj.Book.Id,
-                            IdTypeOfBook = typeId
+                            IdBookType = typeId
                         };
                         _db.BookBookType.Add(bookType);
                     }
@@ -224,7 +224,7 @@ namespace LibraryWebApp.Controllers
                 .ThenInclude(x => x.Author)
                 .Where(x => x.Id == obj.Book.Id)
                 .Include(x => x.BookType)
-                .ThenInclude(x => x.TypeOfBook)
+                .ThenInclude(x => x.BookType)
                 .Where(x => x.Id == obj.Book.Id)
                 .FirstOrDefault()
             };

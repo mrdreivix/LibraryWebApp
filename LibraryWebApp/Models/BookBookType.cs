@@ -14,8 +14,8 @@ namespace LibraryWebApp.Models
         public int IdBook { get; set; }
         [ForeignKey("IdBook")]
         public virtual Book Book { get; set; }
-        public int IdTypeOfBook { get; set; }
-        [ForeignKey("IdTypeOfBook")]
-        public virtual BookType TypeOfBook { get; set; }
+        public int IdBookType { get; set; }
+        [ForeignKey("IdBookType")]
+        public virtual BookType BookType { get; set; }
     }
 }

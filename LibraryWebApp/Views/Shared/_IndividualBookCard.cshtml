@@ -3,17 +3,17 @@
     var filterTypes = "";
     foreach(var i in Model.BookType)
     {
-        filterTypes += i.TypeOfBook.Name;
+        filterTypes += i.BookType.Name;
         filterTypes += " ";
     }
     var shortDescription = "";
     if(Model.Description.Length < 200)
     {
-         shortDescription = (@Model.Description + "    ").Substring(0, Model.Description.Count()).Trim();
+        shortDescription = (@Model.Description + "    ").Substring(0, Model.Description.Count()).Trim();
     }
     else
     {
-         shortDescription = (@Model.Description + "    ").Substring(0, 200).Trim();
+        shortDescription = (@Model.Description + "    ").Substring(0, 200).Trim();
     }
 }
  
@@ -29,7 +29,7 @@
             <div class="col-6">
                 @foreach (var type in Model.BookType)
                 {
-                    <span class="badge p-2 border w-100" style="background-color:lavenderblush;margin-top:5px">@type.TypeOfBook.Name</span>
+                    <span class="badge p-2 border w-100" style="background-color:lavenderblush;margin-top:5px">@type.BookType.Name</span>
                 }
             </div>
             <div class="col-6 border-0">
