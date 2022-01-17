@@ -37,8 +37,21 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+
+            @if (User.IsInRole("Admin"))
+                {
+        <div class="form-group">
+            <pan>Choose role of the account:</pan>
+            <br/>
+            <select asp-for="Input.AccountType" class="form-select" size="3" aria-label="multiple select example">
+                <option value="Admin">Admin</option>
+                <option value="Worker">Worker</option>
+                <option value="Customer">Customer</option>
+            </select>
+        </div>
+                 }
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>

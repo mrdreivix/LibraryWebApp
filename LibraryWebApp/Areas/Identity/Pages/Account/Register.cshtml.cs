@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -65,16 +66,21 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [DisplayName("Full Name")]
             public string FullName { get; set; }
+            [DisplayName("Phone Number")]
             public string PhoneNumber { get; set; }
+            public string AccountType { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if(!await _roleManager.RoleExistsAsync(WC.AdminRole))
+            if (!await _roleManager.RoleExistsAsync(WC.AdminRole))
             {
                 await _roleManager.CreateAsync(new IdentityRole(WC.AdminRole));
                 await _roleManager.CreateAsync(new IdentityRole(WC.CustomerRole));
+                await _roleManager.CreateAsync(new IdentityRole(WC.WorkerRole));
             }
 
             ReturnUrl = returnUrl;
@@ -94,7 +100,24 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
                 {
                     if (User.IsInRole(WC.AdminRole))
                     {
-                        await _userManager.AddToRoleAsync(user, WC.AdminRole);
+                        switch (Input.AccountType)
+                        {
+                            case "Worker":
+                                {
+                                    await _userManager.AddToRoleAsync(user, WC.WorkerRole);
+                                    break;
+                                }
+                            case "Admin":
+                                {
+                                    await _userManager.AddToRoleAsync(user, WC.AdminRole);
+                                    break;
+                                }
+                            case "Customer":
+                                {
+                                    await _userManager.AddToRoleAsync(user, WC.CustomerRole);
+                                    break;
+                                }
+                        }
                     }
                     else
                     {
