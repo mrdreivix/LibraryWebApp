@@ -28,7 +28,7 @@ namespace LibraryWebApp.Controllers
                 .Include(x => x.BookAuthor)
                 .ThenInclude(x => x.Author)
                 .Include(x => x.BookType)
-                .ThenInclude(x => x.TypeOfBook);
+                .ThenInclude(x => x.BookType);
             HomeVM model = new HomeVM
             {
                 Books = books,
