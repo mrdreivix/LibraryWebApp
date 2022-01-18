@@ -1,5 +1,6 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
+using LibraryWebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,18 +13,32 @@ namespace LibraryWebApp.Controllers
     public class UsersController : Controller
     {
         private readonly AppDbContext _db;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<IdentityUser> userManager;
         public UsersController(AppDbContext db, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
-            this.roleManager = roleManager;
             this.userManager = userManager;
             _db = db;
         }
         public IActionResult Index()
         {
-            var users = userManager.Users;
-            return View(users);
+            UserVM model = new UserVM 
+            { 
+                ListOfUsers = userManager.Users,
+            };
+            return View(model);
+        }
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await userManager.DeleteAsync(user);
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

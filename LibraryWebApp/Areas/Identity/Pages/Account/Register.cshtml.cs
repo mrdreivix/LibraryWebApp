@@ -70,6 +70,7 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             public string FullName { get; set; }
             [DisplayName("Phone Number")]
             public string PhoneNumber { get; set; }
+            [Required]
             public string AccountType { get; set; }
 
         }
@@ -100,24 +101,7 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
                 {
                     if (User.IsInRole(WC.AdminRole))
                     {
-                        switch (Input.AccountType)
-                        {
-                            case "Worker":
-                                {
-                                    await _userManager.AddToRoleAsync(user, WC.WorkerRole);
-                                    break;
-                                }
-                            case "Admin":
-                                {
-                                    await _userManager.AddToRoleAsync(user, WC.AdminRole);
-                                    break;
-                                }
-                            case "Customer":
-                                {
-                                    await _userManager.AddToRoleAsync(user, WC.CustomerRole);
-                                    break;
-                                }
-                        }
+                        await _userManager.AddToRoleAsync(user, Input.AccountType);         
                     }
                     else
                     {
@@ -136,6 +120,10 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    if (User.IsInRole(WC.AdminRole))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
