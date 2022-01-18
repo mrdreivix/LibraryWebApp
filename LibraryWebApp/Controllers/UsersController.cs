@@ -14,7 +14,7 @@ namespace LibraryWebApp.Controllers
     {
         private readonly AppDbContext _db;
         private readonly UserManager<IdentityUser> userManager;
-        public UsersController(AppDbContext db, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public UsersController(AppDbContext db, UserManager<IdentityUser> userManager)
         {
             this.userManager = userManager;
             _db = db;
@@ -39,6 +39,8 @@ namespace LibraryWebApp.Controllers
                 await userManager.DeleteAsync(user);
             }
             return RedirectToAction(nameof(Index));
+            var users = userManager.Users;
+            return View(users);
         }
     }
 }
