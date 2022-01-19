@@ -14,17 +14,38 @@ namespace LibraryWebApp.Controllers
     {
         private readonly AppDbContext _db;
         private readonly UserManager<IdentityUser> userManager;
+        
         public UsersController(AppDbContext db, UserManager<IdentityUser> userManager)
         {
             this.userManager = userManager;
             _db = db;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            UserVM model = new UserVM 
-            { 
-                ListOfUsers = userManager.Users,
+            var k = await userManager.FindByIdAsync("f1870d81-bf26-4113-96aa-2e87adaa36e2");
+            UserVM model = new UserVM()
+            {
+                ListOfCustomers = new List<IdentityUser>(),
+                ListOfAdmins = new List<IdentityUser>(),
+                ListOfWorkers = new List<IdentityUser>(),
             };
+            foreach(var i in userManager.Users)
+            {
+                var user = await userManager.FindByIdAsync(i.Id);
+                
+                if(await userManager.IsInRoleAsync(i, WC.WorkerRole))
+                {
+                    model.ListOfWorkers.Add(i);
+                }
+                else if(await userManager.IsInRoleAsync(i, WC.AdminRole))
+                {
+                    model.ListOfAdmins.Add(i);
+                }
+                else
+                {
+                    model.ListOfCustomers.Add(i);
+                }
+            }
             return View(model);
         }
         public async Task<IActionResult> Delete(string id)
@@ -39,8 +60,6 @@ namespace LibraryWebApp.Controllers
                 await userManager.DeleteAsync(user);
             }
             return RedirectToAction(nameof(Index));
-            var users = userManager.Users;
-            return View(users);
         }
     }
 }

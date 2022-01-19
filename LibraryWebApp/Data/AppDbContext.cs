@@ -21,5 +21,6 @@ namespace LibraryWebApp.Data
         public DbSet<BookType> BookType { get; set; }
         public DbSet<Fee> Fee { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Worker> Worker { get; set; }
     }
 }

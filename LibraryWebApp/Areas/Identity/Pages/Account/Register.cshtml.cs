@@ -74,7 +74,6 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             public string AccountType { get; set; }
 
         }
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!await _roleManager.RoleExistsAsync(WC.AdminRole))
@@ -94,19 +93,32 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, PhoneNumber= Input.PhoneNumber,
-                FullName=Input.FullName};
+                var user = new ApplicationUser();
+                if(Input.AccountType == LibraryWebApp.WC.WorkerRole)
+                {
+                     user = new Worker
+                    {
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        PhoneNumber = Input.PhoneNumber,
+                        FullName = Input.FullName,
+                        Earnings = 0
+                    };
+                }
+                else
+                {
+                     user = new ApplicationUser
+                    {
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        PhoneNumber = Input.PhoneNumber,
+                        FullName = Input.FullName
+                    };
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    if (User.IsInRole(WC.AdminRole))
-                    {
-                        await _userManager.AddToRoleAsync(user, Input.AccountType);         
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, WC.CustomerRole);
-                    }
+                    await _userManager.AddToRoleAsync(user, Input.AccountType);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
