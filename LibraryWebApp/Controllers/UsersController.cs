@@ -22,28 +22,27 @@ namespace LibraryWebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var k = await userManager.FindByIdAsync("f1870d81-bf26-4113-96aa-2e87adaa36e2");
             UserVM model = new UserVM()
             {
-                ListOfCustomers = new List<IdentityUser>(),
-                ListOfAdmins = new List<IdentityUser>(),
-                ListOfWorkers = new List<IdentityUser>(),
+                ListOfCustomers = new List<ApplicationUser>(),
+                ListOfAdmins = new List<ApplicationUser>(),
+                ListOfWorkers = new List<Worker>(),
             };
+            
             foreach(var i in userManager.Users)
             {
-                var user = await userManager.FindByIdAsync(i.Id);
-                
+               
                 if(await userManager.IsInRoleAsync(i, WC.WorkerRole))
                 {
-                    model.ListOfWorkers.Add(i);
+                    model.ListOfWorkers.Add((Worker)i);
                 }
                 else if(await userManager.IsInRoleAsync(i, WC.AdminRole))
                 {
-                    model.ListOfAdmins.Add(i);
+                    model.ListOfAdmins.Add((ApplicationUser)i);
                 }
                 else
                 {
-                    model.ListOfCustomers.Add(i);
+                    model.ListOfCustomers.Add((ApplicationUser)i);
                 }
             }
             return View(model);
@@ -60,6 +59,36 @@ namespace LibraryWebApp.Controllers
                 await userManager.DeleteAsync(user);
             }
             return RedirectToAction(nameof(Index));
+        }
+        //GET - EDIT
+        public IActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _db.Worker.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Worker obj)
+        {
+            var user = await userManager.FindByIdAsync(obj.Id);
+            var worker = (Worker)user;
+            worker.Earnings = obj.Earnings;
+            if (ModelState.IsValid)
+            {
+                _db.Worker.Update(worker);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(obj);
         }
     }
 }

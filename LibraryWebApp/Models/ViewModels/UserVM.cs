@@ -10,10 +10,10 @@ namespace LibraryWebApp.Models.ViewModels
     public class UserVM
     {
         [DisplayName("List Of Customers")]
-        public List<IdentityUser> ListOfCustomers { get; set; }
+        public List<ApplicationUser> ListOfCustomers { get; set; }
         [DisplayName("List Of Admins")]
-        public List<IdentityUser> ListOfAdmins{ get; set; }
+        public List<ApplicationUser> ListOfAdmins{ get; set; }
         [DisplayName("List Of Workers")]
-        public List<IdentityUser> ListOfWorkers { get; set; }
+        public List<Worker> ListOfWorkers { get; set; }
     }
 }

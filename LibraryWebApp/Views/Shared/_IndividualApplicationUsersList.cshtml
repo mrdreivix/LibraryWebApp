@@ -1,16 +1,21 @@
-﻿@model List<Microsoft.AspNetCore.Identity.IdentityUser>
+﻿@model  List<ApplicationUser>
+
+
 
 <table class="table table-bordered table-striped" style="width:55%" align="center">
     <thead>
         <tr>
             <th>
-                <label>id</label>
+                <label>Id</label>
             </th>
             <th>
-                <label>name</label>
+                <label>User Name</label>
             </th>
             <th>
-                <label>phone number</label>
+                <label>Phone Number</label>
+            </th>
+            <th>
+                <label>Full Name</label>
             </th>
 
         </tr>
@@ -22,6 +27,7 @@
                 <td width="20%">@user.Id</td>
                 <td width="20%">@user.UserName</td>
                 <td width="20%">@user.PhoneNumber</td>
+                <td width="20%">@user.FullName</td>
                 <td class="text-center">
                     <div class="w-75 btn-group" role="group">
                         <a class="btn btn-danger mx-2" asp-route-Id="@user.Id" asp-action="Delete">
@@ -33,5 +39,5 @@
         }
     </tbody>
 </table>
-<br/>
+<br />
 <br />

@@ -13,11 +13,11 @@
     @if (Model.ListOfAdmins.Count() > 0 || Model.ListOfCustomers.Count() > 0 || Model.ListOfWorkers.Count() > 0)
     {
         <b><label asp-for="@Model.ListOfAdmins"></label></b>
-        <partial name="_IndividualUsersList" model="@Model.ListOfAdmins" />
+        <partial name="_IndividualApplicationUsersList" model="@Model.ListOfAdmins" />
         <b><label asp-for="@Model.ListOfCustomers"></label></b>
-        <partial name="_IndividualUsersList" model="@Model.ListOfCustomers" />
+        <partial name="_IndividualApplicationUsersList" model="@Model.ListOfCustomers" />
         <b> <label asp-for="@Model.ListOfWorkers"></label></b>
-        <partial name="_IndividualUsersList" model="@Model.ListOfWorkers" />
+        <partial name="_IndividualWorkerList" model="@Model.ListOfWorkers" />
     }
     else
     {

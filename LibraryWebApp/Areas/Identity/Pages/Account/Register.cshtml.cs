@@ -94,7 +94,7 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser();
-                if(Input.AccountType == LibraryWebApp.WC.WorkerRole)
+                if(Input.AccountType == WC.WorkerRole)
                 {
                      user = new Worker
                     {
