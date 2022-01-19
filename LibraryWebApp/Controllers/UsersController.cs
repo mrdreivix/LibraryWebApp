@@ -31,7 +31,6 @@ namespace LibraryWebApp.Controllers
             
             foreach(var i in userManager.Users)
             {
-               
                 if(await userManager.IsInRoleAsync(i, WC.WorkerRole))
                 {
                     model.ListOfWorkers.Add((Worker)i);

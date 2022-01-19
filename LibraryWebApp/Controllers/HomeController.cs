@@ -1,6 +1,7 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
 using LibraryWebApp.Models.ViewModels;
+using LibraryWebApp.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -42,7 +43,66 @@ namespace LibraryWebApp.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Details(int? id)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+            }
+            var model = new DetailsVM()
+            {
+                Book = _db.Book
+                  .Include(x => x.BookAuthor)
+                  .ThenInclude(x => x.Author)
+                  .Include(x => x.BookType)
+                  .ThenInclude(x => x.BookType)
+                  .Where(x=>x.Id==id)
+                  .FirstOrDefault(),
+                ExistsInCart = false
+            };
+            foreach(var item in shoppingCartList)
+            {
+                if(item.BookId == id)
+                {
+                    model.ExistsInCart = true;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost,ActionName("Details")]
+        public IActionResult DetailsPost(int id)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if(HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart)!=null 
+                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+            }
+            shoppingCartList.Add(new ShoppingCart { BookId = id });
+            HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
+            return RedirectToAction(nameof(Index));
+        }
+    public IActionResult RemoveFromCart(int id)
+    {
+        List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+        if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
+            && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+        {
+            shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+        }
+
+            var itemToRemove = shoppingCartList.SingleOrDefault(r => r.BookId == id);
+            if (itemToRemove != null)
+            {
+                shoppingCartList.Remove(itemToRemove);
+            }
+        HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
