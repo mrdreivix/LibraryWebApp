@@ -21,7 +21,7 @@
     <!-- Card-->
     <div class="card bg-white rounded shadow-sm" style="border:2px solid #222">
         <div class="card-body px-3 pt-3 pb-1 row">
-            <div class="col-7"><label class="float-left"> <b>@Model.Title</b></label></div>
+            <div class="col-7"><label class="float-left font-weight-bold">@Model.Title</label></div>
             <div class="col-5"><label class="float-right"><span class="text-info h5">@Model.Amount</span> / @Model.Amount</label> </div>
         </div>
         <img class="card-img-top img-fluid d-block mx-auto mb-3" style="max-height:300px;" src="@WC.ImagePath@Model.Image" alt="Card image cap">
@@ -39,11 +39,11 @@
                 }
             </div>
             <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
-                <b><label asp-for="@Model.ReleaseDate"></label></b>
+                <label class="font-weight-bold" asp-for="@Model.ReleaseDate"></label>
                 <p> @Model.ReleaseDate.ToString("MM/dd/yyyy")</p>
             </div>
             <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
-                <b><label asp-for="@Model.Description"></label></b>
+                <label class="font-weight-bold" asp-for="@Model.Description"></label>
                 <p> @shortDescription...</p>
             </div>
             <div class="col-6 p-1">

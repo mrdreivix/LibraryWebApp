@@ -29,19 +29,19 @@ namespace LibraryWebApp.Controllers
                 ListOfWorkers = new List<Worker>(),
             };
             
-            foreach(var i in userManager.Users)
+            foreach(var user in userManager.Users)
             {
-                if(await userManager.IsInRoleAsync(i, WC.WorkerRole))
+                if(await userManager.IsInRoleAsync(user, WC.WorkerRole))
                 {
-                    model.ListOfWorkers.Add((Worker)i);
+                    model.ListOfWorkers.Add((Worker)user);
                 }
-                else if(await userManager.IsInRoleAsync(i, WC.AdminRole))
+                else if(await userManager.IsInRoleAsync(user, WC.AdminRole))
                 {
-                    model.ListOfAdmins.Add((ApplicationUser)i);
+                    model.ListOfAdmins.Add((ApplicationUser)user);
                 }
                 else
                 {
-                    model.ListOfCustomers.Add((ApplicationUser)i);
+                    model.ListOfCustomers.Add((ApplicationUser)user);
                 }
             }
             return View(model);
