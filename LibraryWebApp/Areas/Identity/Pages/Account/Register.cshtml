@@ -37,6 +37,23 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+
+            @if (User.IsInRole(LibraryWebApp.WC.AdminRole))
+            {
+                <div class="form-group">
+                    <pan>Choose role of the account:</pan>
+                    <br />
+                    <select asp-for="Input.AccountType" style="width:100%" class="form-select" size="3" aria-label="multiple select example">
+                        <option value="@LibraryWebApp.WC.AdminRole">@LibraryWebApp.WC.AdminRole</option>
+                        <option value="@LibraryWebApp.WC.WorkerRole">@LibraryWebApp.WC.WorkerRole</option>
+                        <option value="@LibraryWebApp.WC.CustomerRole">@LibraryWebApp.WC.CustomerRole</option>
+                    </select>
+                </div>
+            }
+            else
+            {
+                <input asp-for="Input.AccountType" type="hidden" value="@LibraryWebApp.WC.CustomerRole">
+            }
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>

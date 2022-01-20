@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using LibraryWebApp.Utility
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -35,11 +38,36 @@
                                     <a class="nav-link text-dark" asp-controller="Author" asp-action="Index">Authors</a>
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Fee" asp-action="Index">Fee</a>
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Book</a>
-                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New Admin Account</a>
                                     <div class="dropdown-divider"></div>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Accounts Management
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New Admin Account</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">List Of Users</a>
+                                </div>
+                            </li>
                         }
+                        <li>
+                            @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart) != null)
+            {
+                <a asp-action="Index" asp-controller="Cart" class="nav-link">
+                    @{ 
+                        var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart).Count;
+                    }
+                    <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
+                </a>
+            }
+            else
+            {
+                <a href="#" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i> &nbsp; (0)
+                </a>
+            }
+                        </li>
                     </ul>
                 </div>
             </div>

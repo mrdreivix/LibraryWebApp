@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -65,16 +66,21 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [DisplayName("Full Name")]
             public string FullName { get; set; }
+            [DisplayName("Phone Number")]
             public string PhoneNumber { get; set; }
-        }
+            [Required]
+            public string AccountType { get; set; }
 
+        }
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if(!await _roleManager.RoleExistsAsync(WC.AdminRole))
+            if (!await _roleManager.RoleExistsAsync(WC.AdminRole))
             {
                 await _roleManager.CreateAsync(new IdentityRole(WC.AdminRole));
                 await _roleManager.CreateAsync(new IdentityRole(WC.CustomerRole));
+                await _roleManager.CreateAsync(new IdentityRole(WC.WorkerRole));
             }
 
             ReturnUrl = returnUrl;
@@ -87,19 +93,32 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, PhoneNumber= Input.PhoneNumber,
-                FullName=Input.FullName};
+                var user = new ApplicationUser();
+                if(Input.AccountType == WC.WorkerRole)
+                {
+                     user = new Worker
+                    {
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        PhoneNumber = Input.PhoneNumber,
+                        FullName = Input.FullName,
+                        Earnings = 0
+                    };
+                }
+                else
+                {
+                     user = new ApplicationUser
+                    {
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        PhoneNumber = Input.PhoneNumber,
+                        FullName = Input.FullName
+                    };
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    if (User.IsInRole(WC.AdminRole))
-                    {
-                        await _userManager.AddToRoleAsync(user, WC.AdminRole);
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, WC.CustomerRole);
-                    }
+                    await _userManager.AddToRoleAsync(user, Input.AccountType);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -113,6 +132,10 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    if (User.IsInRole(WC.AdminRole))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

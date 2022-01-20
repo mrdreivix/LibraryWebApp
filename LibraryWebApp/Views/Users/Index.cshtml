@@ -1,1 +1,26 @@
-﻿
+@model LibraryWebApp.Models.ViewModels.UserVM
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Users List</h2>
+        </div>
+    </div>
+
+
+    <br /><br />
+
+    @if (Model.ListOfAdmins.Count() > 0 || Model.ListOfCustomers.Count() > 0 || Model.ListOfWorkers.Count() > 0)
+    {
+        <label class="font-weight-bold" asp-for="@Model.ListOfAdmins"></label>
+        <partial name="_IndividualApplicationUsersList" model="@Model.ListOfAdmins" />
+        <label class="font-weight-bold" asp-for="@Model.ListOfCustomers"></label>
+        <partial name="_IndividualApplicationUsersList" model="@Model.ListOfCustomers" />
+        <label class="font-weight-bold" asp-for="@Model.ListOfWorkers"></label>
+        <partial name="_IndividualWorkerList" model="@Model.ListOfWorkers" />
+    }
+    else
+    {
+        <p>No user exists.</p>
+    }
+</div>

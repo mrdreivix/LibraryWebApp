@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20220113155634_AddFullNameToUsersTable.cs" />
     <Compile Remove="Migrations\20220113155634_AddFullNameToUsersTable.Designer.cs" />
+    <Compile Remove="Migrations\20220118153054_AddEarningsToUser.cs" />
+    <Compile Remove="Migrations\20220118153054_AddEarningsToUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
