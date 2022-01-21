@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Models
 {
-    public class ReservationCart
+    public class ReservationCartEntry
     {
-        public int BookId { get; set; }
+        public int BookIdInCart { get; set; }
     }
 }

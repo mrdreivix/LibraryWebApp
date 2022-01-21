@@ -41,7 +41,7 @@
             @if (User.IsInRole(LibraryWebApp.WC.AdminRole))
             {
                 <div class="form-group">
-                    <pan>Choose role of the account:</pan>
+                    <span>Choose role of the account:</span>
                     <br />
                     <select asp-for="Input.AccountType" style="width:100%" class="form-select" size="3" aria-label="multiple select example">
                         <option value="@LibraryWebApp.WC.AdminRole">@LibraryWebApp.WC.AdminRole</option>

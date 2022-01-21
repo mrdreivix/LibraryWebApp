@@ -21,26 +21,26 @@ namespace LibraryWebApp.Controllers
         }
         public IActionResult Index()
         {
-            List<ReservationCart> reservationCartList = new List<ReservationCart>();
-            if(HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart)!=null
-                && HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart).Count() > 0)
+            List<ReservationCartEntry> reservationCartList = new List<ReservationCartEntry>();
+            if(HttpContext.Session.Get<IEnumerable<ReservationCartEntry>>(WC.SessionCart)!=null
+                && HttpContext.Session.Get<IEnumerable<ReservationCartEntry>>(WC.SessionCart).Count() > 0)
             {
-                reservationCartList = HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart);
+                reservationCartList = HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart);
             }
-            List<int> bookInCart = reservationCartList.Select(i => i.BookId).ToList();
+            List<int> bookInCart = reservationCartList.Select(i => i.BookIdInCart).ToList();
             IEnumerable<Book> bookList = _db.Book.Where(u => bookInCart.Contains(u.Id));
 
             return View(bookList);
         }
         public IActionResult Delete(int id)
         {
-            List<ReservationCart> reservationCartList = new List<ReservationCart>();
-            if (HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart) != null
-                && HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart).Count() > 0)
+            List<ReservationCartEntry> reservationCartList = new List<ReservationCartEntry>();
+            if (HttpContext.Session.Get<IEnumerable<ReservationCartEntry>>(WC.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ReservationCartEntry>>(WC.SessionCart).Count() > 0)
             {
-                reservationCartList = HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart);
+                reservationCartList = HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart);
             }
-            reservationCartList.Remove(reservationCartList.FirstOrDefault(u => u.BookId == id));
+            reservationCartList.Remove(reservationCartList.FirstOrDefault(u => u.BookIdInCart == id));
             HttpContext.Session.Set(WC.SessionCart, reservationCartList);
             return RedirectToAction(nameof(Index));
         }
