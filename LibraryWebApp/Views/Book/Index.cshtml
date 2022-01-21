@@ -57,13 +57,13 @@
                     <td width="22%">
                         @foreach (var bookAuthor in book.BookAuthor)
                         {
-                            <pan>@bookAuthor.Author.Name&nbsp;@bookAuthor.Author.Surname,&nbsp;&nbsp;&nbsp;</pan>
+                            <span>@bookAuthor.Author.Name&nbsp;@bookAuthor.Author.Surname,&nbsp;&nbsp;&nbsp;</span>
                         }
                     </td>
                     <td width="22%">
                         @foreach (var type in book.BookType)
                         {
-                            <pan>@type.BookType.Name,&nbsp;</pan>
+                            <span>@type.BookType.Name,&nbsp;</span>
                         }
                     </td>
                     <td width="20">@book.ReleaseDate.ToString("dd-MM-yyyy") </td>

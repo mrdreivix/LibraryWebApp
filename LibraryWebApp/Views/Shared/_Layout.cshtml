@@ -52,11 +52,11 @@
                             </li>
                         }
                         <li>
-                            @if (HttpContextAccessor.HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart) != null)
-            {
+                            @if (HttpContextAccessor.HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart) != null)
+                            {
                 <a asp-action="Index" asp-controller="ReservationCart" class="nav-link">
                     @{ 
-                        var count = HttpContextAccessor.HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart).Count;
+                        var count = HttpContextAccessor.HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart).Count;
                     }
                     <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
                 </a>
