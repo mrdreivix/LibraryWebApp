@@ -45,11 +45,11 @@ namespace LibraryWebApp.Controllers
 
         public IActionResult Details(int? id)
         {
-            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
-                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+            List<ReservationCart> shoppingCartList = new List<ReservationCart>();
+            if (HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart).Count() > 0)
             {
-                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+                shoppingCartList = HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart);
             }
             var model = new DetailsVM()
             {
@@ -74,23 +74,23 @@ namespace LibraryWebApp.Controllers
         [HttpPost,ActionName("Details")]
         public IActionResult DetailsPost(int id)
         {
-            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-            if(HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart)!=null 
-                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+            List<ReservationCart> shoppingCartList = new List<ReservationCart>();
+            if(HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart)!=null 
+                && HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart).Count() > 0)
             {
-                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+                shoppingCartList = HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart);
             }
-            shoppingCartList.Add(new ShoppingCart { BookId = id });
+            shoppingCartList.Add(new ReservationCart { BookId = id });
             HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
             return RedirectToAction(nameof(Index));
         }
     public IActionResult RemoveFromCart(int id)
     {
-        List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-        if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
-            && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+        List<ReservationCart> shoppingCartList = new List<ReservationCart>();
+        if (HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart) != null
+            && HttpContext.Session.Get<IEnumerable<ReservationCart>>(WC.SessionCart).Count() > 0)
         {
-            shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+            shoppingCartList = HttpContext.Session.Get<List<ReservationCart>>(WC.SessionCart);
         }
 
             var itemToRemove = shoppingCartList.SingleOrDefault(r => r.BookId == id);
