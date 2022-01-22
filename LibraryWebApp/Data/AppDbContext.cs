@@ -22,5 +22,7 @@ namespace LibraryWebApp.Data
         public DbSet<Fee> Fee { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Worker> Worker { get; set; }
+        public DbSet<Reservation> Reservation { get; set; }
+        public DbSet<Client> Client { get; set; }
     }
 }
