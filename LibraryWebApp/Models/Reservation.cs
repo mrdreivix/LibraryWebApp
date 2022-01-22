@@ -17,5 +17,6 @@ namespace LibraryWebApp.Models
         public int IdClient { get; set; }
         [ForeignKey("IdClient")]
         public virtual Client Client { get; set; }
+        public virtual List<ReservationBook> ReservationBook { get; set; }
     }
 }
