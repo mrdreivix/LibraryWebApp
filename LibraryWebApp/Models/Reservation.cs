@@ -14,7 +14,7 @@ namespace LibraryWebApp.Models
         public DateTime DateOfReservation { get; set; }
         public DateTime PlannedDateOfReturn { get; set; }
         public DateTime DateOfReturn { get; set; }
-        public int IdClient { get; set; }
+        public string IdClient { get; set; }
         [ForeignKey("IdClient")]
         public virtual Client Client { get; set; }
         public virtual List<ReservationBook> ReservationBook { get; set; }
