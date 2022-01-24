@@ -46,7 +46,7 @@
                                     Accounts Management
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New Admin Account</a>
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New Account</a>
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">List Of Users</a>
                                 </div>
                             </li>
@@ -67,6 +67,9 @@
                     <i class="fas fa-shopping-cart"></i> &nbsp; (0)
                 </a>
             }
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-controller="Reservation" asp-action="Index">My Reservation</a>
                         </li>
                     </ul>
                 </div>

@@ -1,5 +1,6 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
+using LibraryWebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
