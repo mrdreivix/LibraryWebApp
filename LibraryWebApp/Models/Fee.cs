@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,5 +18,8 @@ namespace LibraryWebApp.Models
         [Required]
         [DisplayName("Amount to Pay")]
         public decimal AmountToPay { get; set; }
+        public int IdReservation { get; set; }
+        [ForeignKey("IdReservation")]
+        public virtual Reservation Reservation { get; set; }
     }
 }

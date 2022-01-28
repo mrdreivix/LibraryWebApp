@@ -38,5 +38,10 @@ namespace LibraryWebApp.Controllers
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult IndexAdmin()
+        {
+            IEnumerable<Reservation> reservationBook = _db.Reservation.Include(x => x.ReservationBook).ThenInclude(x => x.Book);
+            return View(reservationBook);
+        }
     }
 }
