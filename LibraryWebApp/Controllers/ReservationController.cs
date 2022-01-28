@@ -27,5 +27,16 @@ namespace LibraryWebApp.Controllers
             IEnumerable<Reservation> reservationBook =_db.Reservation.Include(x => x.ReservationBook).ThenInclude(x=>x.Book).Where(x=>x.IdClient == user.Id);
             return View(reservationBook);
         }
+        public IActionResult Delete(int id)
+        {
+            var obj = _db.Reservation.Find(id);
+            _db.Reservation.Remove(obj);
+            foreach (var reservationBook in _db.ReservationBook.Where(x => x.IdReservation == id))
+            {
+                _db.ReservationBook.Remove(reservationBook);
+            }
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
