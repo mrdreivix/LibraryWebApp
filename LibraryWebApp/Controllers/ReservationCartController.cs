@@ -17,11 +17,11 @@ namespace LibraryWebApp.Controllers
     {
         private readonly AppDbContext _db;
 
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public ReservationCartController(AppDbContext db, UserManager<IdentityUser> userManager)
         {
-            this.userManager = userManager;
+            _userManager = userManager;
             _db = db;
         }
         public IActionResult Index()
@@ -57,25 +57,23 @@ namespace LibraryWebApp.Controllers
             {
                 reservationCartList = HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart);
             }
-            List<int> bookInCart = reservationCartList.Select(i => i.BookIdInCart).ToList();
-            var todayDate = DateTime.Now;
+            List<int> booksInCart = reservationCartList.Select(i => i.BookIdInCart).ToList();
             var userName = HttpContext.User.Identity.Name;
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
             Reservation reservation = new Reservation()
             {
-                DateOfReservation = todayDate,
-                PlannedDateOfReturn = todayDate.AddMonths(+1),
+                DateOfReservation = DateTime.Now,
+                PlannedDateOfReturn = DateTime.Now.AddMonths(+1),
                 IdClient= user.Id,
             };
             _db.Reservation.Add(reservation);
             _db.SaveChanges();
-            var p = reservation.Id;
-            foreach(var i in bookInCart)
+            foreach(var book in booksInCart)
             {
                 ReservationBook reservationBook = new ReservationBook()
                 {
-                    IdReservation = p,
-                    IdBook = i
+                    IdReservation = reservation.Id,
+                    IdBook = book
                 };
                 _db.ReservationBook.Add(reservationBook);
             }

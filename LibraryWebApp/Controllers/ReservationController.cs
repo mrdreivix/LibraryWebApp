@@ -13,17 +13,17 @@ namespace LibraryWebApp.Controllers
     public class ReservationController : Controller
     {
         private readonly AppDbContext _db;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         public ReservationController(AppDbContext db, UserManager<IdentityUser> userManager)
         {
-            this.userManager = userManager;
+            _userManager = userManager;
             _db = db;
         }
 
         public async Task<IActionResult> Index()
         {
             var userName = HttpContext.User.Identity.Name;
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
             IEnumerable<Reservation> reservationBook =_db.Reservation.Include(x => x.ReservationBook).ThenInclude(x=>x.Book).Where(x=>x.IdClient == user.Id);
             return View(reservationBook);
         }

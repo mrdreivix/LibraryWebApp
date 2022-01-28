@@ -57,11 +57,11 @@
                     <td width="20%">
                         @if (book.Description.Length < 100)
                         {
-                            shortDescription = (book.Description + "    ").Substring(0, book.Description.Count()).Trim();
+                            shortDescription = book.Description.Substring(0, book.Description.Count()).Trim();
                         }
                         else
                         {
-                            shortDescription = (book.Description + "    ").Substring(0, 100).Trim();
+                            shortDescription = book.Description.Substring(0, 100).Trim();
                         }
                         @shortDescription<span>...</span>
                     </td>
