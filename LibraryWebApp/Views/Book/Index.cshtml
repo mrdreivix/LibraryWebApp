@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<LibraryWebApp.Models.Book>
 @{
     var bookModelTemplate = new Book();
+    var shortDescription = "";
+    
 }
 <div class="container p-3">
     <div class="row pt-4">
@@ -52,7 +54,17 @@
                 <tr>
                     <td width="3%">@book.Id</td>
                     <td width="3%">@book.Title</td>
-                    <td width="20%">@book.Description</td>
+                    <td width="20%">
+                        @if (book.Description.Length < 100)
+                        {
+                            shortDescription = book.Description.Substring(0, book.Description.Count()).Trim();
+                        }
+                        else
+                        {
+                            shortDescription = book.Description.Substring(0, 100).Trim();
+                        }
+                        @shortDescription<span>...</span>
+                    </td>
                     <td width="3%">@book.Amount</td>
                     <td width="22%">
                         @foreach (var bookAuthor in book.BookAuthor)

@@ -9,11 +9,11 @@
     var shortDescription = "";
     if(Model.Description.Length < 200)
     {
-        shortDescription = (@Model.Description + "    ").Substring(0, Model.Description.Count()).Trim();
+        shortDescription = @Model.Description.Substring(0, Model.Description.Count()).Trim();
     }
     else
     {
-        shortDescription = (@Model.Description + "    ").Substring(0, 200).Trim();
+        shortDescription = @Model.Description.Substring(0, 200).Trim();
     }
 }
  
