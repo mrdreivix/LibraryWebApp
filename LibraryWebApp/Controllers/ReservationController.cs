@@ -23,8 +23,8 @@ namespace LibraryWebApp.Controllers
         {
             var userName = HttpContext.User.Identity.Name;
             var user = await _userManager.FindByNameAsync(userName);
-            IEnumerable<Reservation> reservationBook = _db.Reservation.Include(x => x.ReservationBook).ThenInclude(x => x.Book).Where(x => x.IdClient == user.Id).Include(x=>x.Fee);
-            return View(reservationBook);
+            IEnumerable<Reservation> reservationBooks = _db.Reservation.Include(x => x.ReservationBook).ThenInclude(x => x.Book).Where(x => x.IdClient == user.Id).Include(x=>x.Fee);
+            return View(reservationBooks);
         }
         public IActionResult Delete(int id)
         {
@@ -39,16 +39,18 @@ namespace LibraryWebApp.Controllers
             {
                 return RedirectToAction(nameof(IndexAdmin));
             }
-            else
-            {
                 return RedirectToAction(nameof(Index));
-            }
         }
         public IActionResult IndexAdmin()
         {
-            IEnumerable<Client> reservations = _db.Client.Include(x => x.Reservation).ThenInclude(x=>x.ReservationBook).ThenInclude(x=>x.Book).Where(x=>x.Reservation.Count>0).Include(x=>x.Reservation).ThenInclude(x=>x.Fee);
-
-            return View(reservations);
+            IEnumerable<Client> listOfClients = _db.Client
+                .Include(x => x.Reservation)
+                .ThenInclude(x=>x.ReservationBook)
+                .ThenInclude(x=>x.Book)
+                .Where(x=>x.Reservation.Count>0)
+                .Include(x=>x.Reservation)
+                .ThenInclude(x=>x.Fee);
+            return View(listOfClients);
         }
         //GET RETURN
         public IActionResult ReturnBook(int id)
@@ -59,33 +61,33 @@ namespace LibraryWebApp.Controllers
         //POST - Return
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ReturnBook(Reservation obj)
+        public IActionResult ReturnBook(Reservation reservationForm)
         {
             if (ModelState.IsValid)
             {
-                var reservation = _db.Reservation.Find(obj.Id);
-                reservation.DateOfReturn = obj.DateOfReturn;
+                var reservation = _db.Reservation.Find(reservationForm.Id);
+                reservation.DateOfReturn = reservationForm.DateOfReturn;
                 reservation.Status = LibraryWebApp.ReservationStatus.Returned;
                 _db.Reservation.Update(reservation);
                 _db.SaveChanges();
                 return RedirectToAction(nameof(IndexAdmin));
             }
-            return View(obj);
+            return View(reservationForm);
         }
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ReservationStatus(Reservation reservation)
         {
-            var obj = _db.Reservation.Find(reservation.Id);
-            obj.Status = reservation.Status;
+            var result = _db.Reservation.Find(reservation.Id);
+            result.Status = reservation.Status;
             if (ModelState.IsValid)
             {
-                _db.Reservation.Update(obj);
+                _db.Reservation.Update(result);
                 _db.SaveChanges();
                 return RedirectToAction(nameof(IndexAdmin));
             }
-            return View(obj);
+            return View(result);
         }
     }
 }

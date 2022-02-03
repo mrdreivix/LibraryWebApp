@@ -2,7 +2,6 @@
 
 @{
     var modelTemplate = new Reservation();
-    var todayDate = DateTime.Today;
 }
 
 <div class="container p-3">
@@ -70,7 +69,7 @@
                     <td width="10%">@string.Concat(reservation.Status.ToString().Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ')</td>
                     @if (reservation.Fee.Where(x => x.Paid == false).Count() > 0 || 
                         reservation.DateOfReturn >= reservation.DateOfReservation || 
-                        reservation.PlannedDateOfReturn <= todayDate || 
+                        reservation.PlannedDateOfReturn <= DateTime.Today || 
                         reservation.Status == ReservationStatus.Taken)
                     {
                         if (reservation.Fee.Count() == 0)

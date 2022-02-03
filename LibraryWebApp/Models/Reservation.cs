@@ -26,6 +26,5 @@ namespace LibraryWebApp.Models
         [DisplayName("Reserved Books")]
         public virtual List<ReservationBook> ReservationBook { get; set; }
         public virtual List<Fee> Fee { get; set; }
-
     }
 }

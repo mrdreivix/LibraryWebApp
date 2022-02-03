@@ -1,9 +1,9 @@
 ﻿@model LibraryWebApp.Models.ViewModels.HomeVM
 @{
     var filterTypes = "";
-    foreach (var i in Model.Book.BookType)
+    foreach (BookBookType bookBookType in Model.Book.BookType)
     {
-        filterTypes += i.BookType.Name;
+        filterTypes += bookBookType.BookType.Name;
         filterTypes += " ";
     }
     var shortDescription = "";

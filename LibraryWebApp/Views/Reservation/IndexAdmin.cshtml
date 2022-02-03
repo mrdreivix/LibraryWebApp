@@ -79,7 +79,7 @@
                             }
                             else
                             {
-                            <form  asp-action="ReservationStatus" method="POST">
+                            <form asp-action="ReservationStatus" method="POST">
                                 <select asp-for="@reservation.Status" onchange="this.form.submit()">
                                     <option value="InProgress">In Progress</option>
                                     <option value="Taken">Taken</option>

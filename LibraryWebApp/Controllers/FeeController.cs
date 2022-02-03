@@ -20,11 +20,14 @@ namespace LibraryWebApp.Controllers
         }
         public IActionResult Index(int id)
         {
+            if(id == 0)
+            {
+                return NotFound();
+            }
             var FeeVM = new FeeVM()
             {
                 FeesList = _db.Fee.Where(x => x.IdReservation == id),
                 IdReservation = id
-
             };
             return View(FeeVM);
         }
@@ -53,7 +56,7 @@ namespace LibraryWebApp.Controllers
             {
                 _db.Fee.Add(fee);
                 _db.SaveChanges();
-                return RedirectToAction("Index", new { id = fee.IdReservation });
+                return RedirectToAction(nameof(Index), new { id = fee.IdReservation });
             }
             return View(fee);
         }
@@ -82,7 +85,7 @@ namespace LibraryWebApp.Controllers
             {
                 _db.Fee.Update(fee);
                 _db.SaveChanges();
-                return RedirectToAction("Index", new { id = fee.IdReservation });
+                return RedirectToAction(nameof(Index), new { id = fee.IdReservation });
             }
             return View(fee);
         }
@@ -99,7 +102,7 @@ namespace LibraryWebApp.Controllers
             }
             _db.Fee.Remove(fee);
             _db.SaveChanges();
-            return RedirectToAction("Index", new { id = fee.IdReservation });
+            return RedirectToAction(nameof(Index), new { id = fee.IdReservation });
         }
     }
     

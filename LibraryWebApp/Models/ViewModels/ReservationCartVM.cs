@@ -7,7 +7,7 @@ namespace LibraryWebApp.Models.ViewModels
 {
     public class ReservationCartVM
     {
-        public IEnumerable<Book> books { get; set; }
+        public IEnumerable<Book> Books { get; set; }
         public bool alreadyReservedBooks { get; set; }
     }
 }

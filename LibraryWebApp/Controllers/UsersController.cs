@@ -57,13 +57,13 @@ namespace LibraryWebApp.Controllers
             {
                 if (_db.Reservation.Where(x => x.IdClient == id).Count() > 0)
                 {
-                    foreach (var k in _db.Reservation.Where(x => x.IdClient == id))
+                    foreach (Reservation reservation in _db.Reservation.Where(x => x.IdClient == id))
                     {
-                        foreach (var p in k.ReservationBook)
+                        foreach (ReservationBook reservationBook in reservation.ReservationBook)
                         {
-                            _db.ReservationBook.Remove(p);
+                            _db.ReservationBook.Remove(reservationBook);
                         }
-                        _db.Reservation.Remove(k);
+                        _db.Reservation.Remove(reservation);
                     }
                     _db.SaveChanges();
                 }

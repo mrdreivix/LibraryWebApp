@@ -17,7 +17,7 @@
         {
             var homeVM = new HomeVM()
             {
-                Book=book,
+                Book = book,
                 Reservations = Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == book.Id)),
             };
 <partial name="_IndividualBookCard" model="homeVM" />

@@ -57,9 +57,9 @@ namespace LibraryWebApp.Controllers
                   .ThenInclude(x => x.Author)
                   .Include(x => x.BookType)
                   .ThenInclude(x => x.BookType)
-                  .Where(x=>x.Id==id)
+                  .Where(x => x.Id == id)
                   .FirstOrDefault(),
-                Reservations = _db.Reservation.Include(x=>x.ReservationBook),
+                Reservations = _db.Reservation.Include(x => x.ReservationBook),
                 ExistsInCart = false
             };
             foreach(var item in shoppingCartList)
