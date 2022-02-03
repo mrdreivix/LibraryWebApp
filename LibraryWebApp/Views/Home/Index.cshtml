@@ -1,5 +1,5 @@
 ﻿@model LibraryWebApp.Models.ViewModels.HomeVM
-
+@using LibraryWebApp.Models.ViewModels;
 <div class="container">
     <div class="text-center">
         <button class="btn btn-dark filter-button" data-filter="all">All</button>
@@ -15,31 +15,34 @@
     <div class="row">
         @foreach (var book in Model.Books)
         {
-            <partial name="_IndividualBookCard" model="book" />
-        }
+            var homeVM = new HomeVM()
+            {
+                Book = book,
+                Reservations = Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == book.Id)),
+            };
+<partial name="_IndividualBookCard" model="homeVM" />
+}
     </div>
 </div>
 
 @section Scripts
-{ 
-<script>
-    $(document).ready(function(){
+{
+    <script>
+        $(document).ready(function () {
 
-    $(".filter-button").click(function(){
+            $(".filter-button").click(function () {
 
-        var value = $(this).attr('data-filter');
-        if(value == "all")
-        {
-            $('.filter').show('1000');
-        }
-        else
-        {
-            $(".filter").not('.'+value).hide('3000');
-            $('.filter').filter('.'+value).show('3000');
+                var value = $(this).attr('data-filter');
+                if (value == "all") {
+                    $('.filter').show('1000');
+                }
+                else {
+                    $(".filter").not('.' + value).hide('3000');
+                    $('.filter').filter('.' + value).show('3000');
 
-        }
-    });
+                }
+            });
 
-});
-</script>
+        });
+    </script>
 }

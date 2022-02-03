@@ -16,7 +16,7 @@
 
     @if (Model.Count() > 0)
     {
-        <table class="table table-bordered table-striped" style="width:55%" align="center">
+        <table class="table table-bordered table-striped" style="width:90%" align="center">
             <thead>
                 <tr>
                     <th>
@@ -31,6 +31,16 @@
                     <th>
                         <label asp-for="@modelTemplate.ReservationBook"></label>
                     </th>
+                    <th>
+                        <label asp-for="@modelTemplate.DateOfReturn"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@modelTemplate.Status"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@modelTemplate.Fee"></label>
+                    </th>
+
                 </tr>
             </thead>
             <tbody>
@@ -40,18 +50,74 @@
                     <td width="3%">@reservation.Id</td>
                     <td width="10%">@reservation.DateOfReservation.ToString("MM/dd/yyyy")</td>
                     <td width="10%">@reservation.PlannedDateOfReturn.ToString("MM/dd/yyyy")</td>
-                    <td width="50%">@foreach (var book in reservation.ReservationBook)
+                    <td width="50%">
+                        @foreach (var book in reservation.ReservationBook)
+                        {
+                            <q>@book.Book.Title</q><span>,&nbsp;</span>
+                        }
+                    </td>
+                    <td>
+                        @if (reservation.DateOfReturn < reservation.DateOfReservation)
+                        {
+                            <span>Not returned</span>
+                        }
+                        else
+                        {
+                            <span>@reservation.DateOfReturn.ToString("MM/dd/yyyy")</span>
+                        }
+                    </td>
+                    <td width="10%">@string.Concat(reservation.Status.ToString().Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ')</td>
+                    @if (reservation.Fee.Where(x => x.Paid == false).Count() > 0 || 
+                        reservation.DateOfReturn >= reservation.DateOfReservation || 
+                        reservation.PlannedDateOfReturn <= DateTime.Today || 
+                        reservation.Status == ReservationStatus.Taken)
                     {
-                        <q>@book.Book.Title</q><span>,&nbsp;</span>
+                        if (reservation.Fee.Count() == 0)
+                        {
+                            <td width="5%">
+                                No Fees
+                            </td>
+                        }
+                        else
+                        {
+                            <td width="5%">
+                                <a class="btn btn-primary mx-2" asp-controller="Fee" asp-route-Id="@reservation.Id" asp-action="Index">
+                                    <i class="fas fa-file-alt"></i>
+                                </a>
+                            </td>
+                        }
                     }
-                    </td>
-                    <td class="text-center">
-                        <div class="w-75 btn-group" role="group">
-                            <a class="btn btn-danger mx-2" asp-route-Id="@reservation.Id" asp-action="Delete">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    </td>
+                    else
+                    {
+                        if (reservation.Fee.Count() == 0)
+                        {
+                            <td width="5%">
+                                No Fees
+                            </td>
+                            <td class="text-center">
+                                <div class=" btn-group" role="group">
+                                    <a class="btn btn-danger mx-2" asp-route-Id="@reservation.Id" asp-action="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td width="5%">
+                                <a class="btn btn-primary mx-2" asp-controller="Fee" asp-route-Id="@reservation.Id" asp-action="Index">
+                                    <i class="fas fa-file-alt"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <div class=" btn-group" role="group">
+                                    <a class="btn btn-danger mx-2" asp-route-Id="@reservation.Id" asp-action="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                    }
                 </tr>
                 }
             </tbody>

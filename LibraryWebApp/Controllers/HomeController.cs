@@ -25,15 +25,14 @@ namespace LibraryWebApp.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Book> books = _db.Book
-                .Include(x => x.BookAuthor)
-                .ThenInclude(x => x.Author)
-                .Include(x => x.BookType)
-                .ThenInclude(x => x.BookType);
             HomeVM model = new HomeVM
             {
-                Books = books,
-                BookTypes = _db.BookType
+                Books = _db.Book.Include(x => x.BookAuthor)
+                .ThenInclude(x => x.Author)
+                .Include(x => x.BookType)
+                .ThenInclude(x => x.BookType),
+                BookTypes = _db.BookType,
+                Reservations = _db.Reservation.Include(x => x.ReservationBook),
             };
             return View(model);
         }
@@ -58,8 +57,9 @@ namespace LibraryWebApp.Controllers
                   .ThenInclude(x => x.Author)
                   .Include(x => x.BookType)
                   .ThenInclude(x => x.BookType)
-                  .Where(x=>x.Id==id)
+                  .Where(x => x.Id == id)
                   .FirstOrDefault(),
+                Reservations = _db.Reservation.Include(x => x.ReservationBook),
                 ExistsInCart = false
             };
             foreach(var item in shoppingCartList)

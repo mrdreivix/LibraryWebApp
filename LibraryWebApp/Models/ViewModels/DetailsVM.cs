@@ -9,5 +9,6 @@ namespace LibraryWebApp.Models.ViewModels
     {
         public Book Book { get; set; }
         public bool ExistsInCart { get; set; }
+        public IEnumerable<Reservation> Reservations{ get; set; }
     }
 }
