@@ -46,7 +46,7 @@ namespace LibraryWebApp.Controllers
             .Count() > 0)
             {
                 var reservedBooks = _db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id).Include(x => x.ReservationBook).ToList();
-                reservationCartVM.alreadyReservedBooks = true;
+                reservationCartVM.AlreadyReservedBooks = true;
                 foreach (Reservation reservation in reservedBooks)
                 {
                     foreach (ReservationBook reservationBook in reservation.ReservationBook)
