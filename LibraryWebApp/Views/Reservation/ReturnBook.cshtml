@@ -1,0 +1,41 @@
+﻿@model LibraryWebApp.Models.Reservation
+@{
+    var todayDate = DateTime.Now.ToString("yyyy-MM-dd");
+}
+<form method="post" asp-action="Create">
+    <input asp-for="Id" hidden value="@Model.Id" />
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Return Reservation</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="DateOfReturn"></label>
+                    </div>
+                    <div class="col-8">
+                        <input type="date" min="@Model.DateOfReservation.ToString("yyyy-MM-dd")" max="@todayDate" asp-for="DateOfReturn" class="form-control" />
+                        <span asp-validation-for="DateOfReturn" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            <input type="submit" asp-action="ReturnBook" class="btn btn-info w-100" value="Return Book" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="IndexAdmin" class="btn btn-primary w-100">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

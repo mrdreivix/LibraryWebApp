@@ -18,6 +18,8 @@ namespace LibraryWebApp.Models
         public DateTime PlannedDateOfReturn { get; set; }
         [DisplayName("Date Of Return")]
         public DateTime DateOfReturn { get; set; }
+        [DisplayName("Reservation Status")]
+        public ReservationStatus Status { get; set; }
         public string IdClient { get; set; }
         [ForeignKey("IdClient")]
         public virtual Client Client { get; set; }

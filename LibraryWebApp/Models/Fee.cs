@@ -15,6 +15,7 @@ namespace LibraryWebApp.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool Paid { get; set; }
         [Required]
         [DisplayName("Amount to Pay")]
         public decimal AmountToPay { get; set; }

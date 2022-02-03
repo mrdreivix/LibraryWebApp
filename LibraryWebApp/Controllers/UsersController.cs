@@ -55,6 +55,18 @@ namespace LibraryWebApp.Controllers
             }
             else
             {
+                if (_db.Reservation.Where(x => x.IdClient == id).Count() > 0)
+                {
+                    foreach (var k in _db.Reservation.Where(x => x.IdClient == id))
+                    {
+                        foreach (var p in k.ReservationBook)
+                        {
+                            _db.ReservationBook.Remove(p);
+                        }
+                        _db.Reservation.Remove(k);
+                    }
+                    _db.SaveChanges();
+                }
                 await userManager.DeleteAsync(user);
             }
             return RedirectToAction(nameof(Index));

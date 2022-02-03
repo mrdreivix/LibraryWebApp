@@ -1,6 +1,7 @@
-﻿@model IEnumerable<Book>
-
-@if (Model.Count() > 0)
+﻿@model LibraryWebApp.Models.ViewModels.ReservationCartVM
+@{
+}
+@if (Model.books.Count() > 0)
 {
     <form method="post">
         <br />
@@ -31,7 +32,7 @@
                             </div>
 
                             <hr />
-                            @foreach (var book in Model)
+                            @foreach (var book in Model.books)
                             {
                                 <div class="row h-100">
                                     <div class="col-4 col-md-2 text-center py-2">
@@ -95,7 +96,20 @@ else
                     <p class="font-weight-bold d-flex justify-content-center">Please add books to cart</p>
                     <hr />
                 </div>
-                </div>
             </div>
         </div>
+    </div>
+}
+
+@if (Model.alreadyReservedBooks)
+{
+<script>
+    document.body.onload = function () {
+        Swal.fire(
+            'Error',
+            'Deleted books that you tried to reserve twice!',
+            'Error'
+        )
+    }
+</script>
 }

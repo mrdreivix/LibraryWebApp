@@ -1,11 +1,11 @@
 ﻿@model LibraryWebApp.Models.Fee
 
-<form method="post">
-    <input asp-for="Id" hidden />
-    <input asp-for="IdReservation" value="@Model.IdReservation" hidden />
+<form method="post" asp-action="Create">
+    <input asp-for="IdReservation" hidden value="@Model.IdReservation" />
     <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
-            <h2 class="text-info pl-3">Edit Fee Details</h2>
+            <h2 class="text-info pl-3">Add Fee</h2>
         </div>
         <div class="row">
             <div class="col-8">
@@ -17,6 +17,7 @@
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
+
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
@@ -26,6 +27,7 @@
                         <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
+
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
@@ -35,24 +37,16 @@
                         <input asp-for="AmountToPay" class="form-control" />
                         <span asp-validation-for="AmountToPay" class="text-danger"></span>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Paid"></label>
-                    </div>
-                    <div class="col-1">
-                        <input type="checkbox" asp-for="Paid" class="form-control text-left" />
-                        <span asp-validation-for="Paid" class="text-danger"></span>
-                    </div>
+
                 </div>
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Update" />
+                            <input type="submit" class="btn btn-info w-100" value="Create" />
                         </div>
                         <div class="col">
-                            <a asp-action="Index" asp-route-id="@Model.IdReservation" class="btn btn-primary w-100">Back</a>
+                            <a  asp-action="Index" asp-route-id="@Model.IdReservation" class="btn btn-primary w-100">Back</a>
                         </div>
                     </div>
                 </div>
@@ -60,4 +54,6 @@
         </div>
     </div>
 </form>
+
+
 

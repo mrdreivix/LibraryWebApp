@@ -1,4 +1,7 @@
 ﻿@model LibraryWebApp.Models.ViewModels.DetailsVM
+@{ 
+    var availableBooks = Model.Book.Amount - Model.Reservations.Where(x => x.ReservationBook.Any(x=>x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count();
+}
 <div class="">
     <form method="post">
         <input asp-for="@Model.Book.Id" hidden />
@@ -9,7 +12,7 @@
                         <h1 class="text-white">@Model.Book.Title</h1>
                     </div>
                     <div class="col-12 col-md-6 text-md-right">
-                        <h1 class="text-warning">Available: @Model.Book.Amount/@Model.Book.Amount</h1>
+                        <h1 class="text-warning">Available: @availableBooks/@Model.Book.Amount</h1>
                     </div>
                 </div>
                 <div class="card-body">
@@ -42,10 +45,14 @@
                     </div>
                 </div>
                 <div class="card-footer bg-dark">
-                    <div class="row">
-                        <div class="col-12 col-md-6 pb-1 ">
+                    <div class="row justify-content-md-center">
+                        <div class="col-12 col-md-6 pb-1">
                             <a asp-action = "Index"  class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to List</a>
                         </div>
+                        @if (!(User.IsInRole(WC.AdminRole)) && !(User.IsInRole(WC.WorkerRole)) || !(availableBooks == 0))
+                        {
+                            @if (!(User.IsInRole(WC.CustomerRole) && Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count() >0))
+                        {
                         <div class="col-12 col-md-6 ">
                             @if (Model.ExistsInCart)
                             {
@@ -56,6 +63,8 @@
                                 <button type="submit" asp-route-id="@Model.Book.Id" class="btn btn-info form-control btn-lg" style="height:50px;">Add to Cart</button>
                             }
                         </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>

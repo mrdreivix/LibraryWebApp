@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity;
+using LibraryWebApp.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApp.Controllers
 { 
@@ -24,7 +26,7 @@ namespace LibraryWebApp.Controllers
             _userManager = userManager;
             _db = db;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<ReservationCartEntry> reservationCartList = new List<ReservationCartEntry>();
             if(HttpContext.Session.Get<IEnumerable<ReservationCartEntry>>(WC.SessionCart)!=null
@@ -32,10 +34,26 @@ namespace LibraryWebApp.Controllers
             {
                 reservationCartList = HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart);
             }
+            var userName = HttpContext.User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
+            var reservationCartVM = new ReservationCartVM();
             List<int> bookInCart = reservationCartList.Select(i => i.BookIdInCart).ToList();
-            IEnumerable<Book> bookList = _db.Book.Where(u => bookInCart.Contains(u.Id));
-
-            return View(bookList);
+            if (_db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id && x.ReservationBook.Where(y=>bookInCart.Contains(y.IdBook)).Count()>0).Include(x => x.ReservationBook).Count() > 0)
+            {
+                var reservedBooks = _db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id).Include(x => x.ReservationBook).ToList();
+                reservationCartVM.alreadyReservedBooks = true;
+                foreach (var i in reservedBooks)
+                {
+                    foreach (var z in i.ReservationBook)
+                    {
+                        reservationCartList.Remove(reservationCartList.FirstOrDefault(u => u.BookIdInCart == z.IdBook));
+                        HttpContext.Session.Set(WC.SessionCart, reservationCartList);
+                    }
+                }
+            }
+            bookInCart = reservationCartList.Select(i => i.BookIdInCart).ToList();
+            reservationCartVM.books = _db.Book.Where(u => bookInCart.Contains(u.Id));
+            return View(reservationCartVM);
         }
         public IActionResult Delete(int id)
         {
@@ -62,7 +80,7 @@ namespace LibraryWebApp.Controllers
             var user = await _userManager.FindByNameAsync(userName);
             Reservation reservation = new Reservation()
             {
-                DateOfReservation = DateTime.Now,
+                DateOfReservation = DateTime.Today,
                 PlannedDateOfReturn = DateTime.Now.AddMonths(+1),
                 IdClient= user.Id,
             };

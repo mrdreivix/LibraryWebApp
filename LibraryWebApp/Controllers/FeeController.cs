@@ -1,5 +1,6 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
+using LibraryWebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,30 +18,44 @@ namespace LibraryWebApp.Controllers
         {
             _db = db;
         }
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            IEnumerable<Fee> objList = _db.Fee;
-            return View(objList);
+            var FeeVM = new FeeVM()
+            {
+                FeesList = _db.Fee.Where(x => x.IdReservation == id),
+                IdReservation = id
+
+            };
+            return View(FeeVM);
         }
 
         //GET - CREATE
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var fee = new Fee()
+            {
+                IdReservation = id,
+            };
+            return View(fee);
         }
 
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Fee obj)
+        public IActionResult Create(Fee fee)
         {
+            fee.Id = 0;
             if (ModelState.IsValid)
             {
-                _db.Fee.Add(obj);
+                _db.Fee.Add(fee);
                 _db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = fee.IdReservation });
             }
-            return View(obj);
+            return View(fee);
         }
 
         //GET - EDIT
@@ -50,26 +65,26 @@ namespace LibraryWebApp.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Fee.Find(id);
-            if (obj == null)
+            var fee = _db.Fee.Find(id);
+            if (fee == null)
             {
                 return NotFound();
             }
-            return View(obj);
+            return View(fee);
         }
 
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Fee obj)
+        public IActionResult Edit(Fee fee)
         {
             if (ModelState.IsValid)
             {
-                _db.Fee.Update(obj);
+                _db.Fee.Update(fee);
                 _db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = fee.IdReservation });
             }
-            return View(obj);
+            return View(fee);
         }
         public IActionResult Delete(int? id)
         {
@@ -77,14 +92,14 @@ namespace LibraryWebApp.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Fee.Find(id);
-            if (obj == null)
+            var fee = _db.Fee.Find(id);
+            if (fee == null)
             {
                 return NotFound();
             }
-            _db.Fee.Remove(obj);
+            _db.Fee.Remove(fee);
             _db.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = fee.IdReservation });
         }
     }
     

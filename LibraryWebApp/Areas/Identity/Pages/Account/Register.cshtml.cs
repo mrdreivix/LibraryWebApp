@@ -105,7 +105,7 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
                         Earnings = 0
                     };
                 }
-                else
+                else if(Input.AccountType == WC.AdminRole)
                 {
                      user = new ApplicationUser
                     {
@@ -114,6 +114,17 @@ namespace LibraryWebApp.Areas.Identity.Pages.Account
                         PhoneNumber = Input.PhoneNumber,
                         FullName = Input.FullName
                     };
+                }
+                else
+                {
+                    user = new Client
+                    {
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        PhoneNumber = Input.PhoneNumber,
+                        FullName = Input.FullName
+                    };
+
                 }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

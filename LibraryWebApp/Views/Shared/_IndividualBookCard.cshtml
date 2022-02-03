@@ -1,56 +1,54 @@
-﻿@model LibraryWebApp.Models.Book
-@{ 
+﻿@model LibraryWebApp.Models.ViewModels.HomeVM
+@{
     var filterTypes = "";
-    foreach(var i in Model.BookType)
+    foreach (var i in Model.Book.BookType)
     {
         filterTypes += i.BookType.Name;
         filterTypes += " ";
     }
     var shortDescription = "";
-    if(Model.Description.Length < 200)
+    if (Model.Book.Description.Length < 200)
     {
-        shortDescription = @Model.Description.Substring(0, Model.Description.Count()).Trim();
+        shortDescription = @Model.Book.Description.Substring(0, Model.Book.Description.Count()).Trim();
     }
     else
     {
-        shortDescription = @Model.Description.Substring(0, 200).Trim();
+        shortDescription = @Model.Book.Description.Substring(0, 200).Trim();
     }
+    var availableBooks = Model.Book.Amount - Model.Reservations.Where(x=>x.DateOfReturn < x.DateOfReservation).Count();
 }
- 
+
 <div class="col-lg-4 col-md-6 pb-4 filter @filterTypes">
     <!-- Card-->
     <div class="card bg-white rounded shadow-sm" style="border:2px solid #222">
         <div class="card-body px-3 pt-3 pb-1 row">
-            <div class="col-7"><label class="float-left font-weight-bold">@Model.Title</label></div>
-            <div class="col-5"><label class="float-right"><span class="text-info h5">@Model.Amount</span> / @Model.Amount</label> </div>
+            <div class="col-7"><label class="float-left font-weight-bold">@Model.Book.Title</label></div>
+            <div class="col-5"><label class="float-right"><span class="text-info h5">@availableBooks</span> / @Model.Book.Amount</label> </div>
         </div>
-        <img class="card-img-top img-fluid d-block mx-auto mb-3" style="max-height:300px;" src="@WC.ImagePath@Model.Image" alt="Card image cap">
+        <img class="card-img-top img-fluid d-block mx-auto mb-3" style="max-height:300px;" src="@WC.ImagePath@Model.Book.Image" alt="Card image cap">
         <div class="card-body p-1 px-3 row">
             <div class="col-6">
-                @foreach (var type in Model.BookType)
+                @foreach (var type in Model.Book.BookType)
                 {
                     <span class="badge p-2 border w-100" style="background-color:lavenderblush;margin-top:5px">@type.BookType.Name</span>
                 }
             </div>
             <div class="col-6 border-0">
-                @foreach (var author in Model.BookAuthor)
+                @foreach (var author in Model.Book.BookAuthor)
                 {
                     <span class="badge p-2 border w-100" style="background-color: aliceblue;margin-top:5px">@author.Author.Name @author.Author.Surname</span>
                 }
             </div>
             <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
-                <label class="font-weight-bold" asp-for="@Model.ReleaseDate"></label>
-                <p> @Model.ReleaseDate.ToString("MM/dd/yyyy")</p>
+                <label class="font-weight-bold" asp-for="@Model.Book.ReleaseDate"></label>
+                <p> @Model.Book.ReleaseDate.ToString("MM/dd/yyyy")</p>
             </div>
             <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
-                <label class="font-weight-bold" asp-for="@Model.Description"></label>
+                <label class="font-weight-bold" asp-for="@Model.Book.Description"></label>
                 <p> @shortDescription...</p>
             </div>
-            <div class="col-6 p-1">
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>
-            </div>
-            <div class="col-6 p-1">
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-dark bg-secondary form-control btn-sm p-2" style="height:40px">Reserve</a>
+            <div class="col-12 p-1">
+                <a asp-action="Details" asp-route-id="@Model.Book.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>
             </div>
         </div>
     </div>

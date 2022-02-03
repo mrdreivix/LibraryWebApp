@@ -34,10 +34,9 @@
                                     Content Management
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="nav-link text-dark" asp-controller="BookType" asp-action="Index">Book Type</a>
+                                    <a class="nav-link text-dark" asp-controller="BookType" asp-action="Index">Book Types</a>
                                     <a class="nav-link text-dark" asp-controller="Author" asp-action="Index">Authors</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Fee" asp-action="Index">Fee</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="IndexAdmin">Reservations</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Books</a>
                                     <div class="dropdown-divider"></div>
                                 </div>
                             </li>
@@ -48,31 +47,56 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New Account</a>
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">List Of Users</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="IndexAdmin">Reservations</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="IndexAdmin">Reservations</a>
                                 </div>
                             </li>
                         }
-
-                        <li>
-                            @if (HttpContextAccessor.HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart) != null)
-                            {
-                                <a asp-action="Index" asp-controller="ReservationCart" class="nav-link">
-                                    @{
-                                        var count = HttpContextAccessor.HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart).Count;
-                                    }
-                                    <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
-                                </a>
-                            }
-                            else
-                            {
-                                <a asp-action="Index" asp-controller="ReservationCart" class="nav-link">
-                                    <i class="fas fa-shopping-cart"></i> &nbsp; (0)
-                                </a>
-                            }
-
-                        </li>
-                        @if (User.IsInRole(WC.AdminRole) || User.IsInRole(WC.WorkerRole) || User.IsInRole(WC.CustomerRole))
+                        else if (User.IsInRole(WC.WorkerRole))
                         {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link text-dark" asp-controller="BookType" asp-action="Index">Book Types</a>
+                                    <a class="nav-link text-dark" asp-controller="Author" asp-action="Index">Authors</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Books</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Accounts Management
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="IndexAdmin">Reservations</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                @if (HttpContextAccessor.HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart) != null)
+                                {
+                                    <a asp-action="Index" asp-controller="ReservationCart" class="nav-link">
+                                        @{
+                                            var count = HttpContextAccessor.HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart).Count;
+                                        }
+                                        <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Index" asp-controller="ReservationCart" class="nav-link">
+                                        <i class="fas fa-shopping-cart"></i> &nbsp; (0)
+                                    </a>
+                                }
+
+                            </li>
+                        }
+                        @if (User.IsInRole(WC.CustomerRole))
+                        {
+
                             <li>
                                 <a class="nav-link text-dark" asp-controller="Reservation" asp-action="Index">My Reservation</a>
                             </li>

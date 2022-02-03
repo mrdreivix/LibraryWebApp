@@ -9,5 +9,7 @@ namespace LibraryWebApp.Models.ViewModels
     {
         public IEnumerable<Book> Books { get; set; }
         public IEnumerable<BookType> BookTypes { get; set; }
+        public IEnumerable<Reservation> Reservations { get; set; }
+        public Book Book { get; set; }
     }
 }

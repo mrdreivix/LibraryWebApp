@@ -12,12 +12,21 @@
 
     @if (Model.ListOfAdmins.Count() > 0 || Model.ListOfCustomers.Count() > 0 || Model.ListOfWorkers.Count() > 0)
     {
+        if (Model.ListOfAdmins.Count() > 0) 
+        { 
         <label class="font-weight-bold" asp-for="@Model.ListOfAdmins"></label>
         <partial name="_IndividualApplicationUsersList" model="@Model.ListOfAdmins" />
+        }
+        if (Model.ListOfCustomers.Count() > 0)
+        {
         <label class="font-weight-bold" asp-for="@Model.ListOfCustomers"></label>
         <partial name="_IndividualApplicationUsersList" model="@Model.ListOfCustomers" />
+        }
+        if (Model.ListOfWorkers.Count() > 0)
+        {
         <label class="font-weight-bold" asp-for="@Model.ListOfWorkers"></label>
         <partial name="_IndividualWorkerList" model="@Model.ListOfWorkers" />
+        }
     }
     else
     {
