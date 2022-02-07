@@ -2,6 +2,7 @@
 using LibraryWebApp.Models;
 using LibraryWebApp.Models.ViewModels;
 using LibraryWebApp.Utility;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -17,10 +18,12 @@ namespace LibraryWebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _db;
-        public HomeController(ILogger<HomeController> logger, AppDbContext db)
+        private readonly UserManager<IdentityUser> _userManager;
+        public HomeController(ILogger<HomeController> logger, AppDbContext db, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _db = db;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -50,11 +53,14 @@ namespace LibraryWebApp.Controllers
             {
                 shoppingCartList = HttpContext.Session.Get<List<ReservationCartEntry>>(WC.SessionCart);
             }
+
             var model = new DetailsVM()
             {
                 Book = _db.Book
                   .Include(x => x.BookAuthor)
                   .ThenInclude(x => x.Author)
+                  .Include(x=>x.BookComment)
+                  .ThenInclude(x=>x.Client)
                   .Include(x => x.BookType)
                   .ThenInclude(x => x.BookType)
                   .Where(x => x.Id == id)
@@ -101,11 +107,36 @@ namespace LibraryWebApp.Controllers
         HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
         return RedirectToAction(nameof(Index));
     }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment(BookComment bookComment)
+        {
+            var model = _db.Book.Find(bookComment.IdBook);
+            if (ModelState.IsValid)
+            {
+                var userName = HttpContext.User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(userName);
+                bookComment.IdClient = user.Id;
+                bookComment.DateOfCommentCreation = DateTime.Now;
+                _db.BookComment.Add(bookComment);
+                _db.SaveChanges();
+            }
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Delete(int id)
+        {
+            var bookComment = _db.BookComment.Find(id);
+            _db.BookComment.Remove(bookComment);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Details), new { id = bookComment.IdBook });
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

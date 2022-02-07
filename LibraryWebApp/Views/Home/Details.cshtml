@@ -1,6 +1,7 @@
 ﻿@model LibraryWebApp.Models.ViewModels.DetailsVM
-@{ 
-    var amountOfAvailableBooks = Model.Book.Amount - Model.Reservations.Where(x => x.ReservationBook.Any(x=>x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count();
+@{
+    var amountOfAvailableBooks = Model.Book.Amount - Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count();
+    var user = User.Identity.Name;
 }
 <div class="">
     <form method="post">
@@ -21,7 +22,7 @@
                             <div class="col-12 col-lg-4 p-1 text-center">
                                 <img src="@WC.ImagePath@Model.Book.Image" width="100%" class="rounded" />
                             </div>
-                            <div class="col-12 col-lg-8">
+                            <div class="col-10 col-lg-8">
                                 <div class="row pl-3">
 
                                     <div class="col-12">
@@ -38,7 +39,6 @@
                                         <p class="text-secondary">@Model.Book.Description</p>
                                         <label asp-for="@Model.Book.ReleaseDate"></label><h> :&nbsp;@Model.Book.ReleaseDate.ToString("MM/dd/yyyy")</h>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -47,22 +47,24 @@
                 <div class="card-footer bg-dark">
                     <div class="row justify-content-md-center">
                         <div class="col-12 col-md-6 pb-1">
-                            <a asp-action = "Index"  class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to List</a>
+                            <a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to List</a>
                         </div>
-                        @if (!(User.IsInRole(WC.AdminRole)) && !(User.IsInRole(WC.WorkerRole)) || !(amountOfAvailableBooks == 0))
+                        @if (!(User.IsInRole(WC.AdminRole)) && !(User.IsInRole(WC.WorkerRole)))
+                        {@if (!(amountOfAvailableBooks == 0))
                         {
-                            @if (!(User.IsInRole(WC.CustomerRole) && Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count() >0))
-                        {
-                        <div class="col-12 col-md-6 ">
-                            @if (Model.ExistsInCart)
+                            @if (!(User.IsInRole(WC.CustomerRole) && Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count() > 0))
                             {
-                                <a asp-action="RemoveFromCart" asp-route-id="@Model.Book.Id" class="btn btn-warning btn-square form-control btn-lg" style="height:50px;">Remove from Cart</a>
+                                <div class="col-12 col-md-6 ">
+                                    @if (Model.ExistsInCart)
+                                    {
+                                        <a asp-action="RemoveFromCart" asp-route-id="@Model.Book.Id" class="btn btn-warning btn-square form-control btn-lg" style="height:50px;">Remove from Cart</a>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" asp-route-id="@Model.Book.Id" class="btn btn-info form-control btn-lg" style="height:50px;">Add to Cart</button>
+                                    }
+                                </div>
                             }
-                            else
-                            {
-                                <button type="submit" asp-route-id="@Model.Book.Id" class="btn btn-info form-control btn-lg" style="height:50px;">Add to Cart</button>
-                            }
-                        </div>
                             }
                         }
                     </div>
@@ -71,3 +73,95 @@
         </div>
     </form>
 </div>
+
+<form method="post">
+
+    <input asp-for="BookComment.IdBook" value="@Model.Book.Id" hidden />
+    <div class="backgroundWhiteBorder">
+        <div class="container pt-4">
+            <div class="pt-4">
+                @if (User.IsInRole(WC.CustomerRole))
+                {
+                    <div class="card mt-4">
+                        <div class="card-header bg-dark text-light ml-0 row container">
+                            <div class="col-6">
+                                Add Comment
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class=" d-none d-lg-block">
+                                <div class="row" style="color:#821f3d">
+                                    <div class="col-lg-2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="float-sm">
+                                <textarea asp-for="@Model.BookComment.Content" rows="4" cols="140">
+                        </textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="col-6 col-md-3 pb-3 offset-md-9">
+                                <input type="submit" asp-action="AddComment" class="btn btn-success form-control " value="Add Comment" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br />
+                    <br />
+                }
+                <div class="card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">
+                        <i class="fas fa-comments"></i>
+                        Comments
+                    </div>
+                </div>
+                @if (Model.Book.BookComment.Count() > 0)
+                {
+                    @foreach (var k in Model.Book.BookComment)
+                    {
+                        <hr />
+                        <div class="row h-100">
+                            <div class="col-4 col-md-2 text-center py-2 border-right">
+
+                                @k.Client.FullName<br/>
+                                @k.DateOfCommentCreation
+                            </div>
+                            <div class="col-8 col-lg-7">
+                                <div style="font-size:11px;">
+                                    @k.Content
+                                </div>
+                            </div>
+                            <div class="col-3  text-center">
+                                @if (k.Client.Email == user || User.IsInRole(WC.AdminRole) || User.IsInRole(WC.WorkerRole))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@k.Id" class="btn btn-outline-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                }
+            else
+            {
+            <br/>
+            <div class="text-center">
+                No Comments
+            </div>
+            }
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+}
