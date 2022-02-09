@@ -187,18 +187,33 @@
     }
 
     function CRate(r) {
-        $("#Rating").val(r);
-        for (var i = 1; i <= r; i++) {
-            $("#Rate" + i).attr('class', 'starGlow');
-            }
+        if (r == $("#Rating").val())
+        {
+            $("#Rating").val(0);
             for (var i = r + 1; i <= 5; i++) {
-            $("#Rate" + i).attr('class', 'starFade');
+                $("#Rate" + i).attr('class', 'starFade');
+            }
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/RateBook",
+                    data: { "id": @Model.Book.Id , "rate": $("#Rating").val() },
+                });
         }
-            $.ajax({
-                type:"POST",
-                url: "/Home/RateBook",
-                data: { "id": @Model.Book.Id ,"rate": r},
-            });
+        else
+            {
+                $("#Rating").val(r);
+                for (var i = 1; i <= r; i++) {
+                    $("#Rate" + i).attr('class', 'starGlow');
+                }
+                for (var i = r + 1; i <= 5; i++) {
+                    $("#Rate" + i).attr('class', 'starFade');
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/RateBook",
+                    data: { "id": @Model.Book.Id , "rate": r },
+                });
+            }
     }
 
     function CRateOver(r) {

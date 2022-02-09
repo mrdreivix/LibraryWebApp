@@ -146,7 +146,12 @@ namespace LibraryWebApp.Controllers
         {
             var userName = HttpContext.User.Identity.Name;
             var user = await _userManager.FindByNameAsync(userName);
-            if (_db.BookRating.Any(x => x.IdClient == user.Id && x.IdBook == id))
+            if(rate == 0)
+            {
+                var bookRating = _db.BookRating.Where(x => x.IdClient == user.Id && x.IdBook == id).FirstOrDefault();
+                _db.BookRating.Remove(bookRating);
+            }
+            else if (_db.BookRating.Any(x => x.IdClient == user.Id && x.IdBook == id))
             {
                 var bookRating = _db.BookRating.Where(x => x.IdClient == user.Id && x.IdBook == id).FirstOrDefault();
                 bookRating.Rate = rate;
