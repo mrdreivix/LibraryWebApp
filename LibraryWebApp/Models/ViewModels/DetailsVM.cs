@@ -11,5 +11,6 @@ namespace LibraryWebApp.Models.ViewModels
         public BookComment BookComment { get; set; }
         public bool ExistsInCart { get; set; }
         public IEnumerable<Reservation> Reservations{ get; set; }
+        public int LoggedUserRating { get; set; }
     }
 }

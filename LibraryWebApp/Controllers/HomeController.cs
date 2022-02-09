@@ -32,6 +32,7 @@ namespace LibraryWebApp.Controllers
             {
                 Books = _db.Book.Include(x => x.BookAuthor)
                 .ThenInclude(x => x.Author)
+                .Include(x=>x.BookRating)
                 .Include(x => x.BookType)
                 .ThenInclude(x => x.BookType),
                 BookTypes = _db.BookType,
@@ -45,7 +46,7 @@ namespace LibraryWebApp.Controllers
             return View();
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             List<ReservationCartEntry> shoppingCartList = new List<ReservationCartEntry>();
             if (HttpContext.Session.Get<IEnumerable<ReservationCartEntry>>(WC.SessionCart) != null
@@ -68,6 +69,15 @@ namespace LibraryWebApp.Controllers
                 Reservations = _db.Reservation.Include(x => x.ReservationBook),
                 ExistsInCart = false
             };
+            if (User.IsInRole(WC.CustomerRole))
+            {
+                var userName = HttpContext.User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(userName);
+                if (_db.BookRating.Any(x => x.IdClient == user.Id && x.IdBook == id))
+                {
+                    model.LoggedUserRating = _db.BookRating.Where(x => x.IdClient == user.Id && x.IdBook == id).FirstOrDefault().Rate;
+                }
+            }
             foreach(var item in shoppingCartList)
             {
                 if(item.BookIdInCart == id)
@@ -132,6 +142,30 @@ namespace LibraryWebApp.Controllers
             return RedirectToAction(nameof(Details), new { id = bookComment.IdBook });
         }
 
+        public async Task<IActionResult> RateBook(int id,int rate)
+        {
+            var userName = HttpContext.User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
+            if (_db.BookRating.Any(x => x.IdClient == user.Id && x.IdBook == id))
+            {
+                var bookRating = _db.BookRating.Where(x => x.IdClient == user.Id && x.IdBook == id).FirstOrDefault();
+                bookRating.Rate = rate;
+                _db.BookRating.Update(bookRating);
+            }
+            else
+            {
+                var bookRating = new BookRating()
+                {
+                    IdBook = id,
+                    Rate = rate,
+                    IdClient = user.Id,
+                };
+
+                _db.BookRating.Add(bookRating);
+            }
+            _db.SaveChanges();
+            return View(id);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

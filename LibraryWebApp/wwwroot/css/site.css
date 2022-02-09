@@ -69,3 +69,23 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/*stars*/
+.starFade {
+    background-image: url('/images/stars/StarFade.png');
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-block;
+    cursor: pointer;
+    background-size: cover;
+}
+
+.starGlow {
+    background-image: url('/images/stars/StarGlow.png');
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-block;
+    cursor: pointer;
+    background-size: cover;
+}
+

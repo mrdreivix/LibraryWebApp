@@ -26,5 +26,6 @@ namespace LibraryWebApp.Data
         public DbSet<Client> Client { get; set; }
         public DbSet<ReservationBook> ReservationBook { get; set; }
         public DbSet<BookComment> BookComment { get; set; }
+        public DbSet<BookRating> BookRating { get; set; }
     }
 }

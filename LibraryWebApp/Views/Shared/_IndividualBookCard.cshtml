@@ -16,6 +16,15 @@
         shortDescription = @Model.Book.Description.Substring(0, 200).Trim();
     }
     var availableBooks = Model.Book.Amount - Model.Reservations.Where(x=>x.DateOfReturn < x.DateOfReservation).Count();
+    var averageRating = default(double);
+    if (Model.Book.BookRating.Count() > 0)
+    {
+        foreach (var bookRating in Model.Book.BookRating)
+        {
+            averageRating += bookRating.Rate;
+        }
+        averageRating = averageRating / Model.Book.BookRating.Count();
+    }
 }
 
 <div class="col-lg-4 col-md-6 pb-4 filter @filterTypes">
@@ -39,9 +48,20 @@
                     <span class="badge p-2 border w-100" style="background-color: aliceblue;margin-top:5px">@author.Author.Name @author.Author.Surname</span>
                 }
             </div>
-            <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
+            <div class="col-6 pt-2" style="font-size:13px; text-align:justify">
                 <label class="font-weight-bold" asp-for="@Model.Book.ReleaseDate"></label>
                 <p> @Model.Book.ReleaseDate.ToString("MM/dd/yyyy")</p>
+            </div>
+            <div class="col-6 pt-2" style="font-size:13px; text-align:justify">
+                <label class="font-weight-bold" asp-for="@Model.Book.BookRating"></label>
+                @if (averageRating == 0)
+                {
+                    <p>No Ratings</p>
+                }
+                else
+                {
+                    <p> @averageRating/5 (@Model.Book.BookRating.Count() Rates)</p>
+                }
             </div>
             <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
                 <label class="font-weight-bold" asp-for="@Model.Book.Description"></label>
