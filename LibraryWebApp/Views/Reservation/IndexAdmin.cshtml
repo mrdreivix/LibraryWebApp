@@ -61,11 +61,15 @@
                             }
                         </td>
                         <td width="20%">
-                            @if (reservation.DateOfReturn < reservation.DateOfReservation)
+                            @if (reservation.Status == ReservationStatus.Cancelled)
                             {
-                                <a class="btn btn-primary mx-2" asp-route-Id="@reservation.Id" asp-action="ReturnBook">
-                                    Return
-                                </a>
+                            <span>Cancelled</span>
+                            }
+                            else if(reservation.DateOfReturn < reservation.DateOfReservation)
+                            {
+                        <a class="btn btn-primary mx-2" asp-route-Id="@reservation.Id" asp-action="ReturnBook">
+                            Return
+                        </a>
                             }
                             else
                             {
@@ -73,20 +77,25 @@
                             }
                         </td>
                         <td width="20%">
-                            @if (reservation.Status == ReservationStatus.Returned)
+                            @if (reservation.Status == ReservationStatus.Cancelled)
                             {
-                            <span>Returned</span>
+                                <span>Cancelled</span>
+                            }
+                            else if (reservation.Status == ReservationStatus.Returned)
+                            {
+                                <span>Returned</span>
                             }
                             else
                             {
-                            <form asp-action="ReservationStatus" method="POST">
-                                <select asp-for="@reservation.Status" onchange="this.form.submit()">
-                                    <option value="InProgress">In Progress</option>
-                                    <option value="Taken">Taken</option>
-                                    <option value="ReadyToTake">Ready to take</option>
-                                </select>
-                                <input asp-for="@reservation.Id" hidden value="@reservation.Id" />
-                            </form>
+                                <form asp-action="ReservationStatus" method="POST">
+                                    <select asp-for="@reservation.Status" onchange="this.form.submit()">
+                                        <option value="InProgress">In Progress</option>
+                                        <option value="Taken">Taken</option>
+                                        <option value="ReadyToTake">Ready to take</option>
+                                        <option value="Cancelled">Cancel</option>
+                                    </select>
+                                    <input asp-for="@reservation.Id" hidden value="@reservation.Id" />
+                                </form>
                             }
                         </td>
                         @if (reservation.Fee.Count() > 0)

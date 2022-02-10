@@ -2,6 +2,7 @@
 using LibraryWebApp.Models;
 using LibraryWebApp.Models.ViewModels;
 using LibraryWebApp.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -117,6 +118,7 @@ namespace LibraryWebApp.Controllers
         HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
         return RedirectToAction(nameof(Index));
     }
+        [Authorize(Roles = WC.CustomerRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(BookComment bookComment)
@@ -133,7 +135,7 @@ namespace LibraryWebApp.Controllers
             }
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
-
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole + "," + WC.CustomerRole)]
         public IActionResult Delete(int id)
         {
             var bookComment = _db.BookComment.Find(id);
@@ -141,7 +143,7 @@ namespace LibraryWebApp.Controllers
             _db.SaveChanges();
             return RedirectToAction(nameof(Details), new { id = bookComment.IdBook });
         }
-
+        [Authorize(Roles = WC.CustomerRole)]
         public async Task<IActionResult> RateBook(int id,int rate)
         {
             var userName = HttpContext.User.Identity.Name;

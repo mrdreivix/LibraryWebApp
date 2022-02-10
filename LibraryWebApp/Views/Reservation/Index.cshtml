@@ -57,7 +57,11 @@
                         }
                     </td>
                     <td>
-                        @if (reservation.DateOfReturn < reservation.DateOfReservation)
+                        @if (reservation.Status == ReservationStatus.Cancelled)
+                        {
+                            <span>Cancelled</span>
+                        }
+                        else if (reservation.DateOfReturn < reservation.DateOfReservation)
                         {
                             <span>Not returned</span>
                         }
@@ -67,56 +71,29 @@
                         }
                     </td>
                     <td width="10%">@string.Concat(reservation.Status.ToString().Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ')</td>
-                    @if (reservation.Fee.Where(x => x.Paid == false).Count() > 0 || 
-                        reservation.DateOfReturn >= reservation.DateOfReservation || 
-                        reservation.PlannedDateOfReturn <= DateTime.Today || 
-                        reservation.Status == ReservationStatus.Taken)
+                    @if (reservation.Fee.Count() == 0)
                     {
-                        if (reservation.Fee.Count() == 0)
-                        {
-                            <td width="5%">
-                                No Fees
-                            </td>
-                        }
-                        else
-                        {
-                            <td width="5%">
-                                <a class="btn btn-primary mx-2" asp-controller="Fee" asp-route-Id="@reservation.Id" asp-action="Index">
-                                    <i class="fas fa-file-alt"></i>
-                                </a>
-                            </td>
-                        }
+                        <td width="5%">
+                            No Fees
+                        </td>
                     }
                     else
                     {
-                        if (reservation.Fee.Count() == 0)
-                        {
-                            <td width="5%">
-                                No Fees
-                            </td>
-                            <td class="text-center">
-                                <div class=" btn-group" role="group">
-                                    <a class="btn btn-danger mx-2" asp-route-Id="@reservation.Id" asp-action="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        }
-                        else
-                        {
-                            <td width="5%">
-                                <a class="btn btn-primary mx-2" asp-controller="Fee" asp-route-Id="@reservation.Id" asp-action="Index">
-                                    <i class="fas fa-file-alt"></i>
+                        <td width="5%">
+                            <a class="btn btn-primary mx-2" asp-controller="Fee" asp-route-Id="@reservation.Id" asp-action="Index">
+                                <i class="fas fa-file-alt"></i>
+                            </a>
+                        </td>
+                    }
+                    @if (reservation.Status == ReservationStatus.ReadyToTake && reservation.Status != ReservationStatus.InProgress)
+                    {
+                        <td class="text-center">
+                            <div class=" btn-group" role="group">
+                                <a class="btn btn-danger mx-2" asp-route-Id="@reservation.Id" asp-action="Cancel">
+                                    Cancel
                                 </a>
-                            </td>
-                            <td class="text-center">
-                                <div class=" btn-group" role="group">
-                                    <a class="btn btn-danger mx-2" asp-route-Id="@reservation.Id" asp-action="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        }
+                            </div>
+                        </td>
                     }
                 </tr>
                 }

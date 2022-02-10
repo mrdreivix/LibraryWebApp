@@ -15,7 +15,7 @@
     {
         shortDescription = @Model.Book.Description.Substring(0, 200).Trim();
     }
-    var availableBooks = Model.Book.Amount - Model.Reservations.Where(x=>x.DateOfReturn < x.DateOfReservation).Count();
+    var availableBooks = Model.Book.Amount - Model.Reservations.Where(x=>x.DateOfReturn < x.DateOfReservation && x.Status != ReservationStatus.Cancelled).Count();
     var averageRating = default(double);
     if (Model.Book.BookRating.Count() > 0)
     {
@@ -34,7 +34,7 @@
             <div class="col-7"><label class="float-left font-weight-bold">@Model.Book.Title</label></div>
             <div class="col-5"><label class="float-right"><span class="text-info h5">@availableBooks</span> / @Model.Book.Amount</label> </div>
         </div>
-        <img class="card-img-top img-fluid d-block mx-auto mb-3" style="max-height:300px;" src="@WC.ImagePath@Model.Book.Image" alt="Card image cap">
+        <img class="card-img-top img-fluid d-block mx-auto mb-3" style="height:300px;" src="@WC.ImagePath@Model.Book.Image" alt="Card image cap">
         <div class="card-body p-1 px-3 row">
             <div class="col-6">
                 @foreach (var type in Model.Book.BookType)

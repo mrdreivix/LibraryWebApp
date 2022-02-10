@@ -1,5 +1,6 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Controllers
 {
+    [Authorize(Roles = WC.AdminRole+","+WC.WorkerRole)]
     public class AuthorController : Controller
     {
         private readonly AppDbContext _db;
