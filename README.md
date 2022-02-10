@@ -10,6 +10,8 @@
 * [Application exemplary usage](#Application-exemplary-usage)
 
 ## Introduction
+This is a Library Web Application. As a guest you can browse the books and read comments. Other users such as client can reserve books, comment or rate them, employees
+can manage existing books in library or create new ones and manage reservations. Admins can manage accounts.
 ## Users Features
 ### Guest
 #### First account created is admin account
@@ -65,3 +67,7 @@
 ![Worker profile](./Screenshots/WorkerProfile.png)
 ### Account creation
 ![Account creation](./Screenshots/AccountCreation.png)
+### Adding new book
+![Adding new book](./Screenshots/AddingNewBook.png)
+### List of books
+![List of books](./Screenshots/ListOfBooks.png)
