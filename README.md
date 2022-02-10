@@ -47,3 +47,21 @@
 ### Database
 * MS SQL Server 2019
 ## Application exemplary usage
+### Main page
+![Main page](./Screenshots/Browse.png)
+### Book details
+![Book details](./Screenshots/BookDetails.png)
+### Comment section
+![Comment section](./Screenshots/CommentSection.png)
+### Reservation cart
+![Reservation cart](./Screenshots/ReservationCart.png)
+### Reservation history
+![Reservation history](./Screenshots/ReservationHistory.png)
+### Fees
+![Fees](./Screenshots/ListOfFees.png)
+### Reservation management
+![Reservation management](./Screenshots/ReservationManagement.png)
+### Worker profile
+![Worker profile](./Screenshots/WorkerProfile.png)
+### Account creation
+![Account creation](./Screenshots/AccountCreation.png)
