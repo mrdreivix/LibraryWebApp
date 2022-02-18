@@ -25,5 +25,7 @@ namespace LibraryWebApp.Models
         public virtual List<BookBookType> BookType { get; set; }
         [DisplayName("Book Comments")]
         public virtual List<BookComment> BookComment { get; set; }
+        [DisplayName("Book Rating")]
+        public virtual List<BookRating> BookRating { get; set; }
     }
 }
