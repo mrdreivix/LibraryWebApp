@@ -13,8 +13,8 @@ using LibraryWebApp.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApp.Controllers
-{ 
-    [Authorize]
+{
+    [Authorize(Roles = WC.CustomerRole)]
     public class ReservationCartController : Controller
     {
         private readonly AppDbContext _db;
@@ -38,14 +38,14 @@ namespace LibraryWebApp.Controllers
             var user = await _userManager.FindByNameAsync(userName);
             var reservationCartVM = new ReservationCartVM();
             var booksIdsInCart = reservationCartEntries.Select(i => i.BookIdInCart).ToList();
-            if (_db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id && x.ReservationBook
+            if (_db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id && x.Status != ReservationStatus.Cancelled && x.ReservationBook 
             .Where(y => booksIdsInCart
             .Contains(y.IdBook))
             .Count() > 0)
             .Include(x => x.ReservationBook)
             .Count() > 0)
             {
-                var reservedBooks = _db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id).Include(x => x.ReservationBook).ToList();
+                var reservedBooks = _db.Reservation.Where(x => x.DateOfReturn < x.DateOfReservation && x.IdClient == user.Id && x.Status != ReservationStatus.Cancelled).Include(x => x.ReservationBook).ToList();
                 reservationCartVM.AlreadyReservedBooks = true;
                 foreach (Reservation reservation in reservedBooks)
                 {

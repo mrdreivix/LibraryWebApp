@@ -1,6 +1,7 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
 using LibraryWebApp.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Controllers
 {
+    
     public class FeeController : Controller
     {
         private readonly AppDbContext _db;
@@ -18,6 +20,8 @@ namespace LibraryWebApp.Controllers
         {
             _db = db;
         }
+
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole + "," + WC.CustomerRole)]
         public IActionResult Index(int id)
         {
             if(id == 0)
@@ -33,6 +37,7 @@ namespace LibraryWebApp.Controllers
         }
 
         //GET - CREATE
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult Create(int id)
         {
             if (id == 0)
@@ -47,6 +52,7 @@ namespace LibraryWebApp.Controllers
         }
 
         //POST - CREATE
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Fee fee)
@@ -62,6 +68,7 @@ namespace LibraryWebApp.Controllers
         }
 
         //GET - EDIT
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult Edit(int? id)
         {
             if (id == null || id == 0)
@@ -77,6 +84,7 @@ namespace LibraryWebApp.Controllers
         }
 
         //POST - EDIT
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Fee fee)
@@ -89,6 +97,7 @@ namespace LibraryWebApp.Controllers
             }
             return View(fee);
         }
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)

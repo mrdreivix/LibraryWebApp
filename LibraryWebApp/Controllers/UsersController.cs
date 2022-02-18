@@ -1,6 +1,7 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
 using LibraryWebApp.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryWebApp.Controllers
 {
+    [Authorize(Roles = WC.AdminRole)]
     public class UsersController : Controller
     {
         private readonly AppDbContext _db;

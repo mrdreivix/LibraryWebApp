@@ -1,5 +1,6 @@
 ﻿using LibraryWebApp.Data;
 using LibraryWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace LibraryWebApp.Controllers
             _userManager = userManager;
             _db = db;
         }
-
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole +","+WC.CustomerRole)]
         public async Task<IActionResult> Index()
         {
             var userName = HttpContext.User.Identity.Name;
@@ -26,6 +27,7 @@ namespace LibraryWebApp.Controllers
             IEnumerable<Reservation> reservationBooks = _db.Reservation.Include(x => x.ReservationBook).ThenInclude(x => x.Book).Where(x => x.IdClient == user.Id).Include(x=>x.Fee);
             return View(reservationBooks);
         }
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult Delete(int id)
         {
             var reservation = _db.Reservation.Find(id);
@@ -35,12 +37,9 @@ namespace LibraryWebApp.Controllers
                 _db.ReservationBook.Remove(reservationBook);
             }
             _db.SaveChanges();
-            if (User.IsInRole(WC.AdminRole))
-            {
-                return RedirectToAction(nameof(IndexAdmin));
-            }
-                return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAdmin));
         }
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult IndexAdmin()
         {
             IEnumerable<Client> listOfClients = _db.Client
@@ -52,13 +51,28 @@ namespace LibraryWebApp.Controllers
                 .ThenInclude(x=>x.Fee);
             return View(listOfClients);
         }
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole + "," + WC.CustomerRole)]
+        public IActionResult Cancel(int id)
+        {
+            var reservation = _db.Reservation.Find(id);
+            if(reservation.Status == LibraryWebApp.ReservationStatus.Cancelled || reservation.Status == LibraryWebApp.ReservationStatus.Taken || reservation.Status == LibraryWebApp.ReservationStatus.Returned)
+            {
+                return NotFound();
+            }
+            reservation.Status = LibraryWebApp.ReservationStatus.Cancelled;
+            _db.Reservation.Update(reservation);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
         //GET RETURN
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult ReturnBook(int id)
         {
             var reservation = _db.Reservation.Find(id);
             return View(reservation);
         }
         //POST - Return
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ReturnBook(Reservation reservationForm)
@@ -77,6 +91,7 @@ namespace LibraryWebApp.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = WC.AdminRole + "," + WC.WorkerRole)]
         public IActionResult ReservationStatus(Reservation reservation)
         {
             var result = _db.Reservation.Find(reservation.Id);

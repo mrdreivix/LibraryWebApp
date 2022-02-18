@@ -1,6 +1,6 @@
 ﻿@model LibraryWebApp.Models.ViewModels.DetailsVM
 @{
-    var amountOfAvailableBooks = Model.Book.Amount - Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count();
+    var amountOfAvailableBooks = Model.Book.Amount - Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation && x.Status != ReservationStatus.Cancelled).Count();
     var user = User.Identity.Name;
 }
 <div class="">
@@ -64,7 +64,7 @@
                         @if (!(User.IsInRole(WC.AdminRole)) && !(User.IsInRole(WC.WorkerRole)))
                         {@if (!(amountOfAvailableBooks == 0))
                         {
-                            @if (!(User.IsInRole(WC.CustomerRole) && Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation).Count() > 0))
+                            @if (!(User.IsInRole(WC.CustomerRole) && Model.Reservations.Where(x => x.ReservationBook.Any(x => x.IdBook == Model.Book.Id) && x.DateOfReturn < x.DateOfReservation && x.Status != ReservationStatus.Cancelled).Count() > 0))
                             {
                                 <div class="col-12 col-md-6 ">
                                     @if (Model.ExistsInCart)
