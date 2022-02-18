@@ -4,6 +4,7 @@ using LibraryWebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace LibraryWebApp.Controllers
             {
                 if (_db.Reservation.Where(x => x.IdClient == id).Count() > 0)
                 {
-                    foreach (Reservation reservation in _db.Reservation.Where(x => x.IdClient == id))
+                    foreach (Reservation reservation in _db.Reservation.Include(x=>x.ReservationBook).Where(x => x.IdClient == id))
                     {
                         foreach (ReservationBook reservationBook in reservation.ReservationBook)
                         {
@@ -67,8 +68,22 @@ namespace LibraryWebApp.Controllers
                         }
                         _db.Reservation.Remove(reservation);
                     }
-                    _db.SaveChanges();
                 }
+                if(_db.BookComment.Where(x => x.IdClient == id).Count() > 0)
+                {
+                    foreach (var k in _db.BookComment.Where(x => x.IdClient == id))
+                    {
+                        _db.BookComment.Remove(k);
+                    }
+                }
+                if (_db.BookRating.Where(x => x.IdClient == id).Count() > 0)
+                {
+                    foreach (var k in _db.BookRating.Where(x => x.IdClient == id))
+                    {
+                        _db.BookRating.Remove(k);
+                    }
+                }
+                _db.SaveChanges();
                 await userManager.DeleteAsync(user);
             }
             return RedirectToAction(nameof(Index));

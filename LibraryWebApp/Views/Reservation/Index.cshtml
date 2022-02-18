@@ -85,7 +85,7 @@
                             </a>
                         </td>
                     }
-                    @if (reservation.Status == ReservationStatus.ReadyToTake && reservation.Status != ReservationStatus.InProgress)
+                    @if ((reservation.Status == ReservationStatus.ReadyToTake || reservation.Status == ReservationStatus.InProgress) && reservation.Fee.Count == 0)
                     {
                         <td class="text-center">
                             <div class=" btn-group" role="group">
