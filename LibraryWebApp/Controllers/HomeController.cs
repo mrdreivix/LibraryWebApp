@@ -26,9 +26,9 @@ namespace LibraryWebApp.Controllers
             _db = db;
             _userManager = userManager;
         }
-
         public IActionResult Index()
         {
+            _logger.LogInformation("You requested page");
             HomeVM model = new HomeVM
             {
                 Books = _db.Book.Include(x => x.BookAuthor)
@@ -171,7 +171,7 @@ namespace LibraryWebApp.Controllers
                 _db.BookRating.Add(bookRating);
             }
             _db.SaveChanges();
-            return View(id);
+            return RedirectToAction(nameof(Details), new { id });
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
