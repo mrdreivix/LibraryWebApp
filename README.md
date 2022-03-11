@@ -44,6 +44,7 @@ can manage existing books in library or create new ones and manage reservations.
 * Bootstrap
 * JavaScript
 ### Additional Libraries
+* Serilog
 * SweetAlert2
 * Fontawesome
 ### Database
