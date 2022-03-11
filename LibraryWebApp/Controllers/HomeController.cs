@@ -171,7 +171,7 @@ namespace LibraryWebApp.Controllers
                 _db.BookRating.Add(bookRating);
             }
             _db.SaveChanges();
-            return View(id);
+            return RedirectToAction(nameof(Details), new { id });
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
