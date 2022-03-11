@@ -26,9 +26,9 @@ namespace LibraryWebApp.Controllers
             _db = db;
             _userManager = userManager;
         }
-
         public IActionResult Index()
         {
+            _logger.LogInformation("You requested page");
             HomeVM model = new HomeVM
             {
                 Books = _db.Book.Include(x => x.BookAuthor)
